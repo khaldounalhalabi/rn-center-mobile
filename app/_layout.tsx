@@ -1,4 +1,4 @@
-import "~/global.css";
+import "@/global.css";
 
 import {
   Theme,
@@ -10,9 +10,15 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Platform } from "react-native";
-import { NAV_THEME } from "~/lib/constants";
-import { useColorScheme } from "~/lib/useColorScheme";
+import { NAV_THEME } from "@/lib/constants";
+import { useColorScheme } from "@/lib/useColorScheme";
 import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
+import UserProvider from "@/components/providers/UserProvider";
+import "@/localization";
+
+export const unstable_settings = {
+  initialRouteName: "index",
+};
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -51,19 +57,22 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: true,
-            title: "Home",
-            headerRight: () => <ThemeToggle />,
-          }}
-        />
-      </Stack>
-    </ThemeProvider>
+    <UserProvider>
+      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <Stack>
+          <Stack.Screen
+            name="(tabs)"
+            options={() => {
+              return {
+                headerShown: true,
+                headerRight: () => <ThemeToggle />,
+              };
+            }}
+          />
+        </Stack>
+      </ThemeProvider>
+    </UserProvider>
   );
 }
 
