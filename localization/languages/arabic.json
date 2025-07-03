@@ -1394,7 +1394,8 @@
     "image": "الصور",
     "noImage": "لا توجد صورة",
     "formula": "معادلة الراتب",
-    "permissions": "الصلاحيات"
+    "permissions": "الصلاحيات",
+    "edit_account_details": "تعديل بيانات الحساب"
   },
   "auth": {
     "welcomeBack": "مرحبا بعودتك",

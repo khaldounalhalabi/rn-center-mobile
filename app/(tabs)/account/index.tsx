@@ -2,10 +2,12 @@ import { Text } from "@/components/ui/text";
 import useUser from "@/hooks/UserHook";
 import { PowerOff, Settings, User2Icon } from "@/lib/icons/icons";
 import { AuthService } from "@/services/AuthService";
+import { useRouter } from "expo-router";
 import * as React from "react";
 import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 
-const Account = () => {
+const Index = () => {
+  const router = useRouter();
   const { role } = useUser();
   const service = AuthService.make(role);
   const logout = async () => {
@@ -15,7 +17,12 @@ const Account = () => {
     <SafeAreaView>
       <ScrollView>
         <View className="w-full flex flex-col px-3">
-          <Pressable className="w-full">
+          <Pressable
+            className="w-full"
+            onPress={() => {
+              router.push("/account/details");
+            }}
+          >
             <View className="w-full flex flex-row items-center justify-between p-5 border-b border-b-secondary">
               <Text>Account Details</Text>
               <User2Icon className="text-primary" />
@@ -39,4 +46,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default Index;

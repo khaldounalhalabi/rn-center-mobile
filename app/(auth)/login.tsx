@@ -29,7 +29,7 @@ const Login = () => {
 
   const onSuccess = async (data: ApiResponse<AuthResponse>) => {
     setUser(data?.data?.user);
-    router.replace("/(tabs)");
+    router.replace("/");
   };
   return (
     <View className="flex-1 items-center justify-center">
@@ -65,7 +65,7 @@ const Login = () => {
           <View className="w-full mt-4 flex flex-row justify-center items-center gap-1 opacity-80">
             <Text>{t("auth.forgetPassword")}</Text>
             <Link
-              href={"/(auth)/reset-password"}
+              href={"/reset-password"}
               className="text-sm underline hover:underline cursor-pointer text-foreground web:select-text"
             >
               {t("auth.resetPassword")}
@@ -73,7 +73,7 @@ const Login = () => {
           </View>
           <View className="w-full mt-4 flex flex-row justify-center items-center gap-1 opacity-80">
             <Link
-              href={"/(auth)"}
+              href={"/role-select"}
               className="text-sm underline hover:underline cursor-pointer text-foreground web:select-text"
             >
               {t("auth.change_user_type", {

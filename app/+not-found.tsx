@@ -1,9 +1,7 @@
-import { Link, Stack } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
-import * as React from "react";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/ui/button";
+import { Link, Stack } from "expo-router";
+import * as React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function NotFoundScreen() {
   return (
@@ -14,7 +12,7 @@ export default function NotFoundScreen() {
           This screen does not exist.
         </Text>
         <Link href="/" style={styles.link}>
-          <Link href={"/"}>
+          <Link href={"/"} replace>
             <Button>
               <Text>Go to home screen!</Text>
             </Button>

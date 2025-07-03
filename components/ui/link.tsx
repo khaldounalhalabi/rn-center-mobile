@@ -4,7 +4,7 @@ import * as React from "react";
 
 const LinkClassContext = React.createContext<string | undefined>(undefined);
 
-export default function Link({ className, ...props }: LinkProps) {
+export default function Link({ className, children, ...props }: LinkProps) {
   const linkClass = React.useContext(LinkClassContext);
   return (
     <EXPOLink
@@ -14,6 +14,8 @@ export default function Link({ className, ...props }: LinkProps) {
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </EXPOLink>
   );
 }

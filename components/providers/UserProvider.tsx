@@ -68,8 +68,11 @@ const UserProvider = ({ children }: { children?: React.ReactNode }) => {
   };
 
   const setSignInRole = async (role: RoleEnum): Promise<void> => {
+    const prev = isInitialized;
+    setIsInitialized(false);
     await AsyncStorage.setItem("login_role", role);
     updateSignInRole(role);
+    setIsInitialized(prev);
   };
 
   return (

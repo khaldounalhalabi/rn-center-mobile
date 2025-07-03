@@ -154,9 +154,9 @@ export function BaseService<SERVICE, MODEL>() {
       if (res.code == 401 || res.code == 403) {
         deleteTokens();
         deleteRole();
-        this.router.replace("/(auth)");
+        this.router.replace("/role-select");
       } else if (res.code == 407) {
-        this.router.replace("/(auth)");
+        this.router.replace("/role-select");
       }
       return res;
     }

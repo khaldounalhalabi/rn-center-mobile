@@ -3,10 +3,11 @@ import { ApiResponse } from "@/http/Response";
 import { useTranslation } from "@/localization";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import LoadingSpinner from "../LoadingSpinner";
 import { toast } from "../toast/toast";
 import { Button } from "../ui/button";
+import { Text } from "../ui/text";
 
 const Form = ({
   children,

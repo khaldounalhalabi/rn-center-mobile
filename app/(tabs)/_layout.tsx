@@ -1,6 +1,6 @@
 import AuthProvider from "@/components/providers/AuthProvider";
 import { Tabs } from "expo-router";
-import { HomeIcon, User2 } from "lucide-react-native";
+import { HomeIcon, Settings } from "lucide-react-native";
 import React from "react";
 
 const TabLayout = () => {
@@ -21,8 +21,8 @@ const TabLayout = () => {
         <Tabs.Screen
           name="account" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
           options={{
-            title: "Account",
-            tabBarIcon: ({ color }) => <User2 color={color} />,
+            title: "Settings",
+            tabBarIcon: ({ color }) => <Settings color={color} />,
           }}
         />
         {/* Add other tab screens here */}

@@ -36,7 +36,7 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
     }
 
     if (this.successStatus) {
-      this.router.replace(`/(tabs)`);
+      this.router.replace(`/`);
     }
 
     return response;
@@ -55,7 +55,7 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
 
     if (this.successStatus) {
       await setOtp(code);
-      this.router.replace(`/(auth)/set-new-password`);
+      this.router.replace(`/set-new-password`);
     }
 
     return response;
@@ -64,7 +64,7 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
   public async resendVerificationCode() {
     const phone = await getPhone();
     if (!phone) {
-      this.router.replace(`/(auth)/reset-password`);
+      this.router.replace(`/reset-password`);
     }
 
     return await POST<null>(`${this.baseUrl}/resend-verification-code`, {
@@ -88,7 +88,7 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
     });
 
     if (this.successStatus) {
-      this.router.replace(`/(auth)/reset-password-code`);
+      this.router.replace(`/reset-password-code`);
     }
 
     return response;
@@ -105,7 +105,7 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
       return response;
     });
 
-    if (this.successStatus) this.router.replace("/(auth)/login");
+    if (this.successStatus) this.router.replace("/login");
     return response;
   }
   public async userDetails(): Promise<ApiResponse<User>> {
@@ -128,6 +128,6 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
     await deleteTokens();
     await deleteRole();
     await deleteUser();
-    this.router.replace("/(auth)");
+    this.router.replace("/role-select");
   };
 }

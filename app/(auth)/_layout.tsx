@@ -1,19 +1,27 @@
 import useUser from "@/hooks/UserHook";
-import { Stack, useRouter } from "expo-router";
-import { ReactNode, useEffect } from "react";
+import { Slot, useRouter } from "expo-router";
+import { useEffect } from "react";
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default function AuthLayout() {
+  const { setSignInRole, user, signInRole } = useUser();
   const router = useRouter();
-  const { signInRole } = useUser();
-
+  useEffect(() => {
+    if (signInRole) {
+      if (user) {
+        setSignInRole(signInRole).then(() => {
+          router.replace("/");
+        });
+      }
+    }
+  }, [user]);
   useEffect(() => {
     if (!signInRole) {
-      router.replace("/(auth)"); // Redirect to the auth index page
+      router.replace("/role-select"); // Redirect to the auth index page
     }
   }, []);
 
   return (
-    <Stack
+    <Slot
       screenOptions={{
         headerShown: false,
       }}

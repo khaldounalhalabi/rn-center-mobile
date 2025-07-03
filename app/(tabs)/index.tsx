@@ -1,8 +1,9 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
-import { getUser } from "@/helpers/helpers";
+import { Text } from "@/components/ui/text";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
@@ -17,6 +18,7 @@ const HomeScreen = () => {
             }}
           >
             <Text>Press</Text>
+            <LoadingSpinner />
           </Button>
         </View>
       </ScrollView>

@@ -1,20 +1,20 @@
 import "@/global.css";
 
+import UserProvider from "@/components/providers/UserProvider";
+import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
+import { NAV_THEME } from "@/lib/constants";
+import { useColorScheme } from "@/lib/useColorScheme";
+import "@/localization";
 import {
+  DarkTheme,
+  DefaultTheme,
   Theme,
   ThemeProvider,
-  DefaultTheme,
-  DarkTheme,
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Platform } from "react-native";
-import { NAV_THEME } from "@/lib/constants";
-import { useColorScheme } from "@/lib/useColorScheme";
-import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
-import UserProvider from "@/components/providers/UserProvider";
-import "@/localization";
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -60,17 +60,14 @@ export default function RootLayout() {
     <UserProvider>
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={() => {
-              return {
-                headerShown: true,
-                headerRight: () => <ThemeToggle />,
-              };
-            }}
-          />
-        </Stack>
+        <Stack
+          screenOptions={{
+            headerShown: true,
+            headerRight: () => <ThemeToggle />,
+            headerTitle: "Reslan Center",
+            
+          }}
+        />
       </ThemeProvider>
     </UserProvider>
   );

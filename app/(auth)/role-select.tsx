@@ -19,9 +19,10 @@ const AuthHome = () => {
   const router = useRouter();
   const onClick = (role: RoleEnum) => {
     setSignInRole(role).then(() => {
-      router.replace("/(auth)/login");
+      router.replace("/login");
     });
   };
+
   return (
     <View className="flex-1 items-center justify-center">
       <Card className="w-[75%]">
