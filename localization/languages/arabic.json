@@ -1423,7 +1423,13 @@
     "send_reset_password_code": "إرسال رمز إعادة تعيين كلمة المرور",
     "sign_as_doctor": "تسجيل الدخول كطبيب",
     "sign_as_secretary": "تسجيل الدخول كسكرتاريا",
-    "change_user_type": "الدخول كـ {{user_type}}"
+    "change_user_type": "الدخول كـ {{user_type}}",
+    "verify_phone": "تحقق من رقم هاتفك",
+    "verify": "تحقق",
+    "verification_code": "رمز التحقق",
+    "resend_verification_code": "إعادة إرسال رمز التحقق",
+    "didnt_get_code": "لم تصلك الرسالة النصية؟",
+    "what_is_your_phone": "ما هو رقم هاتفك؟"
   },
   "contact_and_payment": {
     "phone": "تواصل معنا",
@@ -1718,7 +1724,9 @@
     "mark_all_as_read": "تعليم الكل كمقروء",
     "loading_more": "تحميل المزيد",
     "download": "تحميل",
-    "and_items_count": "و {items_count} عنصر آخر"
+    "and_items_count": "و {items_count} عنصر آخر",
+    "datepicker": "اختر تاريخاً",
+    "retry": "إعادة المحاولة"
   },
   "holidays": {
     "from": "من",

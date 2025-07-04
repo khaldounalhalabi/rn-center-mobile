@@ -1431,8 +1431,8 @@
     "verify": "Verify",
     "verification_code": "Verification Code",
     "resend_verification_code": "Resend verification code",
-    "didnt_get_code":"Didn't get the SMS ?",
-    "what_is_your_phone" : "What is your phone number"
+    "didnt_get_code": "Didn't get the SMS ?",
+    "what_is_your_phone": "What is your phone number"
   },
   "contact_and_payment": {
     "phone": "Contact us",
@@ -1728,7 +1728,9 @@
     "mark_all_as_read": "Mark all as read",
     "loading_more": "Loading more",
     "download": "Download",
-    "and_items_count": "And {items_count} other items"
+    "and_items_count": "And {items_count} other items",
+    "datepicker": "Pick a date",
+    "retry": "Retry"
   },
   "holidays": {
     "from": "From",

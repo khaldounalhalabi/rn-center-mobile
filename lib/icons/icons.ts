@@ -1,8 +1,42 @@
-import { Loader2, PowerOff, Settings, User2Icon } from "lucide-react-native";
+import {
+  AlertCircleIcon,
+  Award,
+  Calendar,
+  Clock,
+  Loader2,
+  PowerOff,
+  Settings,
+  SlidersHorizontal,
+  Target,
+  Timer,
+  TrendingUp,
+  User2Icon,
+} from "lucide-react-native";
 import { iconWithClassName } from "./IconWithClassName";
 
 iconWithClassName(Loader2);
 iconWithClassName(PowerOff);
 iconWithClassName(User2Icon);
 iconWithClassName(Settings);
-export { Loader2, PowerOff, User2Icon, Settings };
+iconWithClassName(SlidersHorizontal);
+iconWithClassName(AlertCircleIcon);
+iconWithClassName(Clock);
+iconWithClassName(Timer);
+iconWithClassName(Calendar);
+iconWithClassName(TrendingUp);
+iconWithClassName(Target);
+iconWithClassName(Award);
+export {
+  AlertCircleIcon,
+  Award,
+  Calendar,
+  Clock,
+  Loader2,
+  PowerOff,
+  Settings,
+  SlidersHorizontal,
+  Target,
+  Timer,
+  TrendingUp,
+  User2Icon,
+};

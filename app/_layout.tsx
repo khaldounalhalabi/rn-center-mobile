@@ -18,11 +18,15 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import duration from "dayjs/plugin/duration";
 import * as Network from "expo-network";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { AppStateStatus, Platform } from "react-native";
+
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -43,7 +47,22 @@ export {
 } from "expo-router";
 
 export default function RootLayout() {
-  const [queryClient] = React.useState(() => new QueryClient());
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: true,
+            retry: 3,
+            retryDelay: 100,
+          },
+        },
+      }),
+  );
+
+  dayjs.extend(duration);
+  dayjs.extend(isBetween);
+
   const hasMounted = React.useRef(false);
   const { colorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);

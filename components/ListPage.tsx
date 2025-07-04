@@ -1,0 +1,129 @@
+import { ApiResponse } from "@/http/Response";
+import { useTranslation } from "@/localization";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { FlatList, ListRenderItem, View } from "react-native";
+import useFilter from "./Filter";
+import LoadingScreen from "./LoadingScreen";
+import LoadingSpinner from "./LoadingSpinner";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Text } from "./ui/text";
+
+interface ListPageProps<DATAITEM> {
+  api: (
+    page: number,
+    search?: string,
+    params?: Record<string, any>,
+  ) => Promise<ApiResponse<DATAITEM[]>>;
+
+  filter?: (
+    params: Record<string, any> | undefined,
+    setParam: (key: string, value: any) => void,
+  ) => React.ReactNode;
+  enableSearch?: boolean;
+
+  renderItem: ListRenderItem<DATAITEM> | null | undefined;
+}
+
+function useListPage<DATAITEM>({
+  api,
+  filter,
+  renderItem,
+  enableSearch = true,
+}: ListPageProps<DATAITEM>) {
+  const { t } = useTranslation();
+  const { params, setParam, Filter } = useFilter();
+  const [search, setSearch] = useState<undefined | string>(undefined);
+
+  const {
+    data: items,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    refetch,
+    isRefetching,
+  } = useInfiniteQuery({
+    queryKey: ["list_view", search, params],
+    queryFn: async ({ pageParam }) => api(pageParam, search, params),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return !lastPage.paginate?.is_last
+        ? lastPage.paginate?.current_page
+          ? lastPage.paginate?.current_page + 1
+          : null
+        : null;
+    },
+    select(data) {
+      return data.pages.flatMap((d) => d.data);
+    },
+  });
+
+  const Render = () => {
+    if (isError)
+      return (
+        <View className="flex-1 items-center justify-center p-4">
+          <Text className="mb-4 text-center">{t("types_statuses.failed")}</Text>
+          <Button onPress={() => refetch()}>{t("components.retry")}</Button>
+        </View>
+      );
+
+    return (
+      <>
+        <View className="w-full p-[16px] flex flex-row justify-between items-center gap-3">
+          {filter && <Filter>{filter(params, setParam)}</Filter>}
+          {enableSearch && (
+            <Input
+              dataDetectorTypes={"all"}
+              className="w-full"
+              placeholder={t("table.search")}
+              onChangeText={(value) => {
+                if (value.trim().length > 0) {
+                  setSearch(value);
+                } else {
+                  setSearch(value);
+                }
+              }}
+            />
+          )}
+        </View>
+
+        {isLoading ? (
+          <LoadingScreen />
+        ) : (
+          <FlatList
+            contentContainerStyle={{ padding: 16 }}
+            data={items}
+            renderItem={renderItem}
+            ListEmptyComponent={
+              <View className="items-center justify-center py-12">
+                <Text className="text-muted-foreground">
+                  {t("components.no_data")}
+                </Text>
+              </View>
+            }
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+            }}
+            onEndReachedThreshold={0.2}
+            ListFooterComponent={
+              isFetchingNextPage ? (
+                <View className="items-center my-4">
+                  <LoadingSpinner className="text-foreground" />
+                </View>
+              ) : null
+            }
+            refreshing={isRefetching && !isFetchingNextPage}
+            onRefresh={() => refetch()}
+          />
+        )}
+      </>
+    );
+  };
+
+  return { Render, refetch, isLoading };
+}
+
+export default useListPage;

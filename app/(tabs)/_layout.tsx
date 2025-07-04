@@ -1,6 +1,6 @@
 import AuthProvider from "@/components/providers/AuthProvider";
 import { Tabs } from "expo-router";
-import { HomeIcon, Settings } from "lucide-react-native";
+import { HomeIcon, Settings, TentTree } from "lucide-react-native";
 import React from "react";
 
 const TabLayout = () => {
@@ -18,6 +18,15 @@ const TabLayout = () => {
             tabBarIcon: ({ color }) => <HomeIcon color={color} />,
           }}
         />
+
+        <Tabs.Screen
+          name="holidays" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
+          options={{
+            title: "Holidays",
+            tabBarIcon: ({ color }) => <TentTree color={color} />,
+          }}
+        />
+        
         <Tabs.Screen
           name="account" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
           options={{
