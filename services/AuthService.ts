@@ -61,7 +61,7 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
     return response;
   }
 
-  public async resendVerificationCode() {
+  public async resendResetPasswordCode() {
     const phone = await getPhone();
     if (!phone) {
       this.router.replace(`/reset-password`);
@@ -122,6 +122,9 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
     data: any,
   ): Promise<ApiResponse<AuthResponse>> {
     const res = await POST<AuthResponse>(`${this.role}/update-user-data`, data);
+    if (res.ok()) {
+      await setPhone(res?.data?.user?.phone);
+    }
     return await this.errorHandler(res);
   }
   public logout = async () => {
@@ -130,4 +133,40 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
     await deleteUser();
     this.router.replace("/role-select");
   };
+
+  public async verifyPhone(verificationCode: string) {
+    const response = await POST<boolean>(
+      `/${this.role}/verify`,
+      {
+        verification_code: verificationCode,
+      },
+      this.headers,
+    );
+
+    if (response.ok()) {
+      this.router.replace("/login");
+    }
+
+    return this.errorHandler(response);
+  }
+
+  public async resendVerificationCode() {
+    const phone = await getPhone();
+    if (!phone) {
+      this.router.replace(`/reset-phone-first`);
+    }
+
+    const response = await POST<null>(
+      `${this.baseUrl}/resend-verification-code`,
+      {
+        phone: phone,
+      },
+    );
+
+    if (response.ok()) {
+      await setPhone(phone);
+    }
+
+    return this.errorHandler(response);
+  }
 }

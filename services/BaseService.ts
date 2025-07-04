@@ -50,7 +50,7 @@ export function BaseService<SERVICE, MODEL>() {
       const res: ApiResponse<MODEL[]> = await GET<MODEL[]>(
         this.baseUrl + "/all",
         undefined,
-        this.headers
+        this.headers,
       );
       return await this.errorHandler(res);
     }
@@ -61,7 +61,7 @@ export function BaseService<SERVICE, MODEL>() {
       sortCol?: string,
       sortDir?: string,
       per_page?: number,
-      params?: object
+      params?: object,
     ): Promise<ApiResponse<MODEL[]>> {
       const res: ApiResponse<MODEL[]> = await GET<MODEL[]>(
         this.baseUrl,
@@ -73,7 +73,7 @@ export function BaseService<SERVICE, MODEL>() {
           per_page: per_page,
           ...params,
         },
-        this.headers
+        this.headers,
       );
 
       return await this.errorHandler(res);
@@ -81,7 +81,7 @@ export function BaseService<SERVICE, MODEL>() {
 
     public async store(
       data: any,
-      headers?: object
+      headers?: object,
     ): Promise<ApiResponse<MODEL>> {
       const res: ApiResponse<MODEL> = await POST<MODEL>(this.baseUrl, data, {
         ...headers,
@@ -96,7 +96,7 @@ export function BaseService<SERVICE, MODEL>() {
         res = await DELETE<boolean>(
           this.baseUrl + "/" + id,
           undefined,
-          this.headers
+          this.headers,
         );
       } else res = await DELETE<boolean>(this.baseUrl, undefined, this.headers);
       return await this.errorHandler(res);
@@ -109,7 +109,7 @@ export function BaseService<SERVICE, MODEL>() {
       const res = await GET<MODEL>(
         this.baseUrl + "/" + id,
         undefined,
-        this.headers
+        this.headers,
       );
       if (res.code == 404) {
         this.router.replace("/+not-found");
@@ -125,7 +125,7 @@ export function BaseService<SERVICE, MODEL>() {
     public async update(
       id?: number,
       data?: any,
-      headers?: object
+      headers?: object,
     ): Promise<ApiResponse<MODEL>> {
       if (!id) {
         this.router.replace("/+not-found");
@@ -141,15 +141,15 @@ export function BaseService<SERVICE, MODEL>() {
     }
 
     public async errorHandler<ResType>(
-      res: ApiResponse<ResType>
+      res: ApiResponse<ResType>,
     ): Promise<Promise<ApiResponse<ResType>>>;
 
     public async errorHandler<ResType>(
-      res: ApiResponse<ResType[]>
+      res: ApiResponse<ResType[]>,
     ): Promise<Promise<ApiResponse<ResType[]>>>;
 
     public async errorHandler(
-      res: ApiResponse<MODEL> | ApiResponse<MODEL[]>
+      res: ApiResponse<MODEL> | ApiResponse<MODEL[]>,
     ): Promise<Promise<ApiResponse<MODEL>> | Promise<ApiResponse<MODEL[]>>> {
       if (res.code == 401 || res.code == 403) {
         deleteTokens();
@@ -158,6 +158,11 @@ export function BaseService<SERVICE, MODEL>() {
       } else if (res.code == 407) {
         this.router.replace("/role-select");
       }
+
+      if (res.notVerified()) {
+        this.router.replace("/verify-phone");
+      }
+
       return res;
     }
   };

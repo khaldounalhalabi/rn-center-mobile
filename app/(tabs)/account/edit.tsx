@@ -29,7 +29,7 @@ import { View } from "react-native";
 const Edit = () => {
   const { t } = useTranslation();
   const translateEnum = useTranslateEnum();
-  const { role, setUser } = useUser();
+  const { role, setUser, user: storedUser } = useUser();
   const service = AuthService.make(role);
   const {
     data: user,
@@ -46,7 +46,13 @@ const Edit = () => {
   const handleSubmit = async (data: any) => {
     return await service.updateUserDetails(data).then((res) => {
       if (res.ok()) {
-        setUser(res.data.user);
+        if (storedUser?.phone != res.data?.user?.phone) {
+          service.logout().then(() => {
+            router.replace("/verify-phone");
+          });
+        } else {
+          setUser(res.data.user);
+        }
       }
       refetch();
       return res;

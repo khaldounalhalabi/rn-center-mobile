@@ -3,6 +3,7 @@ import FormInput from "@/components/inputs/FormInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { RoleEnum } from "@/enums/RoleEnum";
+import { setPhone } from "@/helpers/helpers";
 import useUser from "@/hooks/UserHook";
 import { ApiResponse } from "@/http/Response";
 import { useTranslation } from "@/localization";
@@ -20,9 +21,15 @@ const Login = () => {
   const { t } = useTranslation();
   const onSubmit = async (data: any) => {
     setError(false);
+    await setPhone(data.phone);
     const response = await service.login(data.phone, data.password);
     if (response.isNotAuthorized()) {
       setError(true);
+    }
+
+    if (response.notVerified()) {
+      console.log("Not verified");
+      router.replace("/verify-phone");
     }
     return response;
   };
@@ -40,7 +47,11 @@ const Login = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Form handleSubmit={onSubmit} onSuccess={onSuccess}>
+          <Form
+            handleSubmit={onSubmit}
+            onSuccess={onSuccess}
+            buttonText={t("auth.Login")}
+          >
             <FormInput
               name="phone"
               label={t("auth.phone")}
@@ -48,6 +59,7 @@ const Login = () => {
               dataDetectorTypes={"phoneNumber"}
               autoComplete="tel-device"
               returnKeyType="next"
+              textContentType="telephoneNumber"
             />
             <FormInput
               name="password"

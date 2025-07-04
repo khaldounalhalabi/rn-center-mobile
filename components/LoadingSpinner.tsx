@@ -2,7 +2,7 @@ import { Loader2 } from "@/lib/icons/Loader2";
 import React, { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ className = undefined }: { className?: string }) => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const LoadingSpinner = () => {
 
   return (
     <Animated.View style={{ transform: [{ rotate: spin }] }}>
-      <Loader2 className="text-background" />
+      <Loader2 className={className ?? "text-secondary"} />
     </Animated.View>
   );
 };

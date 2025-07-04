@@ -25,7 +25,7 @@ const ResetPasswordCode = () => {
 
   const handleResetButton = async () => {
     setLoading(true);
-    await service.resendVerificationCode();
+    await service.resendResetPasswordCode();
     setLoading(false);
     toast.success(t("components.success"));
   };
@@ -52,6 +52,7 @@ const ResetPasswordCode = () => {
               type="tel"
               label={t("auth.code")}
               autoComplete="sms-otp"
+              textContentType="oneTimeCode"
             />
 
             <Button

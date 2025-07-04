@@ -1426,7 +1426,13 @@
     "send_reset_password_code": "Send reset password code",
     "sign_as_doctor": "Sign in as a doctor",
     "sign_as_secretary": "Sign in as a secretary",
-    "change_user_type": "Change to {{user_type}}"
+    "change_user_type": "Change to {{user_type}}",
+    "verify_phone": "Verify your phone number",
+    "verify": "Verify",
+    "verification_code": "Verification Code",
+    "resend_verification_code": "Resend verification code",
+    "didnt_get_code":"Didn't get the SMS ?",
+    "what_is_your_phone" : "What is your phone number"
   },
   "contact_and_payment": {
     "phone": "Contact us",

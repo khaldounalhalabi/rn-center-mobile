@@ -29,8 +29,9 @@ const FormInput = ({
   required,
   onChangeText,
   type,
-  secureTextEntry,
-  returnKeyType,
+  secureTextEntry = false,
+  returnKeyType = undefined,
+  textContentType = undefined,
   ...props
 }: Props) => {
   const {
@@ -76,6 +77,9 @@ const FormInput = ({
             secureTextEntry={secureTextEntry || type == "password"}
             keyboardType={type == "tel" ? "phone-pad" : "default"}
             returnKeyType={returnKeyType ?? "next"}
+            textContentType={
+              type == "tel" ? "telephoneNumber" : textContentType
+            }
           />
         )}
       />
