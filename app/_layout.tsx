@@ -11,10 +11,18 @@ import {
   Theme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { PortalHost } from "@rn-primitives/portal";
+import {
+  focusManager,
+  onlineManager,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import * as Network from "expo-network";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform } from "react-native";
+import { AppStateStatus, Platform } from "react-native";
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -35,6 +43,7 @@ export {
 } from "expo-router";
 
 export default function RootLayout() {
+  const [queryClient] = React.useState(() => new QueryClient());
   const hasMounted = React.useRef(false);
   const { colorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
@@ -56,20 +65,36 @@ export default function RootLayout() {
     return null;
   }
 
+  onlineManager.setEventListener((setOnline) => {
+    const eventSubscription = Network.addNetworkStateListener((state) => {
+      setOnline(!!state.isConnected);
+    });
+    return eventSubscription.remove;
+  });
+
+  function onAppStateChange(status: AppStateStatus) {
+    if (Platform.OS !== "web") {
+      focusManager.setFocused(status === "active");
+    }
+  }
   return (
-    <UserProvider>
-      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Stack
-          screenOptions={{
-            headerShown: true,
-            headerRight: () => <ThemeToggle />,
-            headerTitle: "Reslan Center",
-            
-          }}
-        />
-      </ThemeProvider>
-    </UserProvider>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <UserProvider>
+          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <Stack
+              screenOptions={{
+                headerShown: true,
+                headerRight: () => <ThemeToggle />,
+                headerTitle: "Reslan Center",
+              }}
+            />
+          </ThemeProvider>
+        </UserProvider>
+      </QueryClientProvider>
+      <PortalHost />
+    </>
   );
 }
 

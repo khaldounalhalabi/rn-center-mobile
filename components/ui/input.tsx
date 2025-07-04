@@ -16,7 +16,7 @@ function Input({
         props.editable === false && 'opacity-50 web:cursor-not-allowed',
         className
       )}
-      placeholderClassName={cn('text-muted-foreground', placeholderClassName)}
+      placeholderClassName={cn('text-muted-foreground text-xs', placeholderClassName)}
       {...props}
     />
   );

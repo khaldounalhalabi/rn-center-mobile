@@ -1,6 +1,6 @@
 "use client";
 import { RoleEnum } from "@/enums/RoleEnum";
-import { getUser, setRole, setUser } from "@/helpers/helpers";
+import { setRole, setUser } from "@/helpers/helpers";
 import { User } from "@/models/User";
 import { AuthService } from "@/services/AuthService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -53,18 +53,10 @@ const UserProvider = ({ children }: { children?: React.ReactNode }) => {
   }, []);
 
   const initializeUser = async () => {
-    // Try to get user from localStorage and check validity
-    const storedUser = await getUser();
-    fillUser(storedUser);
-
-    if (!storedUser) {
-      // If not valid, revalidate with AuthService
-      const res = await AuthService.make().me();
-      fillUser(res.data);
-      await setUser(res.data);
-      return res.data;
-    }
-    return storedUser;
+    const res = await AuthService.make().me();
+    fillUser(res.data);
+    await setUser(res.data);
+    return res.data;
   };
 
   const setSignInRole = async (role: RoleEnum): Promise<void> => {

@@ -51,7 +51,7 @@ const FormInput = ({
   }, [defaultValue, name, setValue]);
 
   return (
-    <View className="w-full flex flex-col justify-start">
+    <View className="w-full flex flex-col justify-start gap-2 min-w-full">
       <Label className="w-full">
         <Text>{label}</Text>
       </Label>
@@ -74,7 +74,6 @@ const FormInput = ({
             placeholder={getPlaceholder(type, label ?? "", eg)}
             {...props}
             secureTextEntry={secureTextEntry || type == "password"}
-            placeholderClassName="text-xs"
             keyboardType={type == "tel" ? "phone-pad" : "default"}
             returnKeyType={returnKeyType ?? "next"}
           />
