@@ -12,8 +12,10 @@
       "supportsTablet": true,
       "infoPlist": {
         "ExpoLocalization_supportsRTL": true,
-        "ExpoLocalization_forcesRTL": true
-      }
+        "ExpoLocalization_forcesRTL": true,
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "reslan.alnaal.center"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +23,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.mohammed.js.planet_of_medicien"
+      "package": "com.mohammed.js.planet_of_medicien",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -47,11 +50,10 @@
     },
     "extra": {
       "router": {},
-      "supportsRTL": true,
-      "forcesRTL": true,
       "eas": {
-        "projectId": "0705883c-62fe-4d49-b32b-b3cb51f0e5fd"
+        "projectId": "2d3b00aa-7131-4841-8ec1-b1e2e704f3ee"
       }
-    }
+    },
+    "owner": "khaldounalhalabi"
   }
 }
