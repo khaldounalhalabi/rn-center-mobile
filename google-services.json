@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "55453435164",
+    "project_id": "astral-host-372216",
+    "storage_bucket": "astral-host-372216.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55453435164:android:540ff2dea57ae18b67e6d9",
+        "android_client_info": {
+          "package_name": "reslan_alnaal_center.android_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeerSDQav2kjjj9Z1kwYIjUzryUQxUF8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
