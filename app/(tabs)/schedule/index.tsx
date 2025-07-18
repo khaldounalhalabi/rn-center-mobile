@@ -12,16 +12,6 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { FlatList, RefreshControl, SafeAreaView, View } from "react-native";
 
-const weekDaysOrder = [
-  WeekDayEnum.SUNDAY,
-  WeekDayEnum.MONDAY,
-  WeekDayEnum.TUESDAY,
-  WeekDayEnum.WEDNESDAY,
-  WeekDayEnum.THURSDAY,
-  WeekDayEnum.FRIDAY,
-  WeekDayEnum.SATURDAY,
-];
-
 const Index = () => {
   const { t } = useTranslation();
   const { role } = useUser();
@@ -40,7 +30,6 @@ const Index = () => {
     },
   });
 
-  // Check if all days are empty
   const isAllEmpty =
     !schedules ||
     getEnumValues(WeekDayEnum).every(
@@ -90,7 +79,10 @@ const Index = () => {
               schedules[dayName] &&
               schedules[dayName].length > 0 ? (
                 schedules[dayName].map((slot: Schedule, idx: number) => (
-                  <View key={idx} className="flex flex-row justify-between items-center mb-1">
+                  <View
+                    key={idx}
+                    className="flex flex-row justify-between items-center mb-1"
+                  >
                     <LabelValue
                       label={t("admin.schedules.table.startTime")}
                       value={slot.start_time}
