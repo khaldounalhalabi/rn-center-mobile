@@ -2,6 +2,7 @@ import AuthProvider from "@/components/providers/AuthProvider";
 import { Tabs } from "expo-router";
 import {
   Calendar,
+  CalendarClock,
   DoorOpen,
   HomeIcon,
   Settings,
@@ -46,6 +47,14 @@ const TabLayout = () => {
           options={{
             title: "Attendance",
             tabBarIcon: ({ color }) => <DoorOpen color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="schedule"
+          options={{
+            title: "My Schedule",
+            tabBarIcon: ({ color }) => <CalendarClock color={color} />,
           }}
         />
 
