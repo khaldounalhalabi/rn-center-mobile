@@ -8,9 +8,11 @@ import {
   Select as ShadcnSelect,
 } from "@/components/ui/select";
 import { useTranslation } from "@/localization";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TranslatableEnum, { useTranslateEnum } from "../TranslatableEnum";
+
 const Select = ({
   data,
   selected = undefined,
@@ -39,7 +41,10 @@ const Select = ({
   const insets = useSafeAreaInsets();
   const contentInsets = {
     top: insets.top,
-    bottom: insets.bottom,
+    bottom: Platform.select({
+      android: insets.bottom + 24,
+      default: insets.bottom,
+    }),
     left: 12,
     right: 12,
   };
@@ -65,27 +70,35 @@ const Select = ({
             className="text-foreground text-sm native:text-lg"
           />
         </SelectTrigger>
-        <SelectContent insets={contentInsets}>
-          <SelectGroup>
-            <SelectLabel>{label ?? ""}</SelectLabel>
-            {data.map((item, index) => (
-              <SelectItem
-                value={item == "all" ? "" : isOption(item) ? item.value : item}
-                key={index}
-                label={
-                  isOption(item) ? item.label : translated ? tEnum(item) : item
-                }
-              >
-                {isOption(item) ? (
-                  item.label
-                ) : translated ? (
-                  <TranslatableEnum value={item} />
-                ) : (
-                  item
-                )}
-              </SelectItem>
-            ))}
-          </SelectGroup>
+        <SelectContent insets={contentInsets} side="top">
+          <ScrollView className="max-h-[250px]">
+            <SelectGroup>
+              <SelectLabel>{label ?? ""}</SelectLabel>
+              {data.map((item, index) => (
+                <SelectItem
+                  value={
+                    item == "all" ? "" : isOption(item) ? item.value : item
+                  }
+                  key={index}
+                  label={
+                    isOption(item)
+                      ? item.label
+                      : translated
+                        ? tEnum(item)
+                        : item
+                  }
+                >
+                  {isOption(item) ? (
+                    item.label
+                  ) : translated ? (
+                    <TranslatableEnum value={item} />
+                  ) : (
+                    item
+                  )}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </ScrollView>
         </SelectContent>
       </ShadcnSelect>
     </View>

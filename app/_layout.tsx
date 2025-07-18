@@ -27,6 +27,7 @@ import { AppStateStatus, Platform } from "react-native";
 
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -98,21 +99,23 @@ export default function RootLayout() {
   }
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <UserProvider>
-          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-            <Stack
-              screenOptions={{
-                headerShown: true,
-                headerRight: () => <ThemeToggle />,
-                headerTitle: "Reslan Center",
-              }}
-            />
-          </ThemeProvider>
-        </UserProvider>
-      </QueryClientProvider>
-      <PortalHost />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <QueryClientProvider client={queryClient}>
+          <UserProvider>
+            <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+              <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+              <Stack
+                screenOptions={{
+                  headerShown: true,
+                  headerRight: () => <ThemeToggle />,
+                  headerTitle: "Reslan Center",
+                }}
+              />
+            </ThemeProvider>
+          </UserProvider>
+        </QueryClientProvider>
+        <PortalHost />
+      </GestureHandlerRootView>
     </>
   );
 }
