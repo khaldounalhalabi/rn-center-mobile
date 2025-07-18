@@ -7,6 +7,7 @@ import {
   HomeIcon,
   Settings,
   TentTree,
+  WalletCards,
 } from "lucide-react-native";
 import React from "react";
 
@@ -55,6 +56,14 @@ const TabLayout = () => {
           options={{
             title: "My Schedule",
             tabBarIcon: ({ color }) => <CalendarClock color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="payslips"
+          options={{
+            title: "Payslips",
+            tabBarIcon: ({ color }) => <WalletCards color={color} />,
           }}
         />
 

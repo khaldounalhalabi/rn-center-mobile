@@ -1887,7 +1887,11 @@
     "variables_values_in_period": "قيم المتغيرات خلال فترة الدفع",
     "benefits": "المكتسبات",
     "exclude": "استبعاد من هذه الدورة المالية",
-    "include": "إدراج في هذه الدورة المالية"
+    "include": "إدراج في هذه الدورة المالية",
+    "no_benefits": "لا يوجد مكتسبات",
+    "no_deductions": "لا يوجد خصومات",
+    "select_status": "اختر حالة",
+    "toggle_status": "قبول أو رفض الدفعة المالية"
   },
   "medical_records": {
     "summary": "ملخص",

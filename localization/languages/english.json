@@ -1891,7 +1891,11 @@
     "variables_values_in_period": "Variables values within the payslip period",
     "benefits": "Benefits",
     "exclude": "Exclude from this payrun",
-    "include": "Include in this payrun"
+    "include": "Include in this payrun",
+    "no_benefits": "No Benefits",
+    "no_deductions": "No Deductions",
+    "select_status": "Select a status",
+    "toggle_status": "Toggle payslip status"
   },
   "medical_records": {
     "summary": "Summary",
