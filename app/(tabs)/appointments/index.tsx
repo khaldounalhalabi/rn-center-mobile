@@ -25,6 +25,7 @@ const Appointments = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { Render } = useListPage({
+    queryKey: "appointments",
     api(page, search, params) {
       return service.indexWithPagination(
         page,

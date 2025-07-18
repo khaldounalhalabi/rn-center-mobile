@@ -66,13 +66,13 @@ export async function deleteUser() {
 }
 
 export function getNestedPropertyValue(object: any, path: string): any {
-  const properties = path.split("."); // Split the path string by dot to get individual property names
+  const properties = path.split(".");
   let value = object;
   for (const property of properties) {
     if (value?.hasOwnProperty(property)) {
-      value = value[`${property}`]; // Access the property dynamically
+      value = value[`${property}`];
     } else {
-      return undefined; // Property doesn't exist
+      return undefined;
     }
   }
   return value;

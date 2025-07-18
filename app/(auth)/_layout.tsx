@@ -16,7 +16,7 @@ export default function AuthLayout() {
   }, [user]);
   useEffect(() => {
     if (!signInRole) {
-      router.replace("/role-select"); // Redirect to the auth index page
+      router.replace("/role-select");
     }
   }, []);
 

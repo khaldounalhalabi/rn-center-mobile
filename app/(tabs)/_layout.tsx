@@ -18,7 +18,7 @@ const TabLayout = () => {
         }}
       >
         <Tabs.Screen
-          name="index" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
+          name="index"
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => <HomeIcon color={color} />,
@@ -26,7 +26,7 @@ const TabLayout = () => {
         />
 
         <Tabs.Screen
-          name="holidays" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
+          name="holidays"
           options={{
             title: "Holidays",
             tabBarIcon: ({ color }) => <TentTree color={color} />,
@@ -34,7 +34,7 @@ const TabLayout = () => {
         />
 
         <Tabs.Screen
-          name="appointments" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
+          name="appointments"
           options={{
             title: "Appointments",
             tabBarIcon: ({ color }) => <Calendar color={color} />,
@@ -42,7 +42,7 @@ const TabLayout = () => {
         />
 
         <Tabs.Screen
-          name="attendance" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
+          name="attendance"
           options={{
             title: "Attendance",
             tabBarIcon: ({ color }) => <DoorOpen color={color} />,
@@ -50,7 +50,7 @@ const TabLayout = () => {
         />
 
         <Tabs.Screen
-          name="account" // Corresponds to app/(drawer)/(tabs)/index.tsx -> Home Screen
+          name="account"
           options={{
             title: "Settings",
             tabBarIcon: ({ color }) => <Settings color={color} />,

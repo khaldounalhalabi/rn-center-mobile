@@ -19,6 +19,7 @@ const Holidays = () => {
   const service = HolidayService.make(role);
   const { t } = useTranslation();
   const { Render } = useListPage<Holiday>({
+    queryKey: "holidays",
     api(page, search, params) {
       return service.indexWithPagination(
         page,

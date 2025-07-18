@@ -16,7 +16,7 @@ type LanguageContextType = {
 export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState('en'); // Default to English
+  const [language, setLanguage] = useState('en');
 
   useEffect(() => {
     const loadLanguage = async () => {

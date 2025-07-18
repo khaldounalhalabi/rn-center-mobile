@@ -9,7 +9,7 @@ const useTimer = ({ startTime }: { startTime?: string }) => {
 
     const updateTimer = () => {
       const now = dayjs();
-      const diff = dayjs.duration(now.diff(start)); // Calculate the difference
+      const diff = dayjs.duration(now.diff(start));
 
       const formatted = [
         String(diff.days()).padStart(2, "0"),
@@ -21,9 +21,9 @@ const useTimer = ({ startTime }: { startTime?: string }) => {
       setElapsedTime(formatted);
     };
 
-    const intervalId = setInterval(updateTimer, 1000); // Update every second
+    const intervalId = setInterval(updateTimer, 1000);
 
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    return () => clearInterval(intervalId);
   }, [startTime]);
 
   return elapsedTime;

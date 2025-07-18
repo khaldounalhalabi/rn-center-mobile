@@ -25,6 +25,7 @@ const Index = () => {
   }));
 
   const { Render } = useListPageNoPagination({
+    queryKey: "attendance_logs",
     api(search, params) {
       return service.mine(params?.year ?? year, params?.month ?? month);
     },

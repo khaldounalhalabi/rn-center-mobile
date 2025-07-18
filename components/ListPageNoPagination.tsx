@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { FlatList, ListRenderItem, View } from "react-native";
 import useFilter from "./Filter";
 import LoadingScreen from "./LoadingScreen";
-import LoadingSpinner from "./LoadingSpinner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Text } from "./ui/text";
@@ -23,9 +22,9 @@ interface ListPageNoPaginationProps<DATAITEM> {
   enableSearch?: boolean;
 
   renderItem: ListRenderItem<DATAITEM> | null | undefined;
-  
-  // Optional function to transform object data to array format
+
   transformData?: (data: DATAITEM[] | Record<string, any>) => DATAITEM[];
+  queryKey?: string;
 }
 
 function useListPageNoPagination<DATAITEM>({
@@ -34,6 +33,7 @@ function useListPageNoPagination<DATAITEM>({
   renderItem,
   enableSearch = true,
   transformData,
+  queryKey,
 }: ListPageNoPaginationProps<DATAITEM>) {
   const { t } = useTranslation();
   const { params, setParam, Filter } = useFilter();
@@ -46,32 +46,30 @@ function useListPageNoPagination<DATAITEM>({
     refetch,
     isRefetching,
   } = useQuery({
-    queryKey: ["list_view_no_pagination", search, params],
+    queryKey: ["list_view_no_pagination_" + queryKey, search, params],
     queryFn: async () => {
       const response = await api(search, params);
       return response.data;
     },
   });
 
-  // Transform data to array format
   const items: DATAITEM[] = React.useMemo(() => {
     if (!rawData) return [];
-    
+
     if (transformData) {
       return transformData(rawData);
     }
-    
-    // Default transformation: if it's an array, use it as is; if it's an object, convert to array
+
     if (Array.isArray(rawData)) {
       return rawData;
-    } else if (typeof rawData === 'object' && rawData !== null) {
+    } else if (typeof rawData === "object" && rawData !== null) {
       return Object.entries(rawData).map(([key, value]) => ({
         key,
         value,
-        ...(typeof value === 'object' ? value : { data: value })
+        ...(typeof value === "object" ? value : { data: value }),
       })) as DATAITEM[];
     }
-    
+
     return [];
   }, [rawData, transformData]);
 
@@ -129,4 +127,4 @@ function useListPageNoPagination<DATAITEM>({
   return { Render, refetch, isLoading };
 }
 
-export default useListPageNoPagination; 
+export default useListPageNoPagination;

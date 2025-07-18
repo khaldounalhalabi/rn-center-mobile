@@ -24,6 +24,7 @@ interface ListPageProps<DATAITEM> {
   enableSearch?: boolean;
 
   renderItem: ListRenderItem<DATAITEM> | null | undefined;
+  queryKey?: string;
 }
 
 function useListPage<DATAITEM>({
@@ -31,6 +32,7 @@ function useListPage<DATAITEM>({
   filter,
   renderItem,
   enableSearch = true,
+  queryKey,
 }: ListPageProps<DATAITEM>) {
   const { t } = useTranslation();
   const { params, setParam, Filter } = useFilter();
@@ -46,7 +48,7 @@ function useListPage<DATAITEM>({
     refetch,
     isRefetching,
   } = useInfiniteQuery({
-    queryKey: ["list_view", search, params],
+    queryKey: ["list_view_" + queryKey, search, params],
     queryFn: async ({ pageParam }) => api(pageParam, search, params),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
