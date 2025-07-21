@@ -1,14 +1,12 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { ApiErrorType, ApiResponse } from "@/http/Response";
-import { getLocales } from "expo-localization";
 import { getToken } from "@/helpers/helpers";
-import { NativeModules } from "react-native";
-import { i18n } from "@/localization";
+import { ApiErrorType, ApiResponse } from "@/http/Response";
+import AppConfig from "@/lib/Config";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 export const GET = async <T>(
   url: string,
   params?: object,
-  headers?: object
+  headers?: object,
 ): Promise<ApiResponse<T>> => {
   return await http("GET", url, headers, params);
 };
@@ -16,7 +14,7 @@ export const GET = async <T>(
 export const POST = async <T>(
   url: string,
   data: any,
-  headers?: object
+  headers?: object,
 ): Promise<ApiResponse<T>> => {
   return await http("POST", url, headers, undefined, data);
 };
@@ -24,7 +22,7 @@ export const POST = async <T>(
 export const PUT = async <T>(
   url: string,
   data: any,
-  headers?: object
+  headers?: object,
 ): Promise<ApiResponse<T>> => {
   return await http("PUT", url, headers, undefined, data);
 };
@@ -32,7 +30,7 @@ export const PUT = async <T>(
 export const DELETE = async <T>(
   url: string,
   params?: object,
-  headers?: object
+  headers?: object,
 ): Promise<ApiResponse<T>> => {
   return await http("DELETE", url, headers, params);
 };
@@ -42,7 +40,7 @@ const http = async <T>(
   url: string,
   headers?: object,
   params?: object,
-  data?: object | undefined
+  data?: object | undefined,
 ): Promise<ApiResponse<T>> => {
   let lang = "en";
   const token = await getToken();
@@ -57,7 +55,7 @@ const http = async <T>(
   const config = {
     headers: { ...headers, ...h },
     params: params,
-    baseURL: "https://rn.cubeta.io/api/",
+    baseURL: AppConfig.BACKEND_URL,
     url: url,
   };
   try {
@@ -85,7 +83,7 @@ const http = async <T>(
       response.data.status ?? null,
       response.data.code ?? 500,
       response.data.message ?? null,
-      response.data.paginate ?? null
+      response.data.paginate ?? null,
     );
   } catch (error: any) {
     return handleError(error);
@@ -99,21 +97,21 @@ function handleError<T>(error: AxiosError<ApiResponse<T>>): ApiResponse<T> {
         null as T,
         false,
         405,
-        error.response.data.message
+        error.response.data.message,
       );
     }
     return new ApiResponse<T>(
       null as T,
       false,
       error.response?.data.code ?? error.response?.status ?? 400,
-      error.response?.data?.message
+      error.response?.data?.message,
     );
   } else {
     return new ApiResponse<T>(
       null as T,
       false,
       400,
-      ApiErrorType.UNKNOWN_ERROR
+      ApiErrorType.UNKNOWN_ERROR,
     );
   }
 }

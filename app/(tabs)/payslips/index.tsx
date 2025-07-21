@@ -1,24 +1,141 @@
-import LabelValue from "@/components/label-value";
 import useListPage from "@/components/ListPage";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import TranslatableEnum from "@/components/TranslatableEnum";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardDescription,
+  CardContent,
+  CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
+import useFileDownload from "@/hooks/useFileDownload";
 import useUser from "@/hooks/UserHook";
+import { DownloadIcon } from "@/lib/icons/icons";
 import { useTranslation } from "@/localization";
 import Payslip from "@/models/Payslip";
 import PayslipService from "@/services/PayslipService";
 import { useRouter } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
-const Payslips = () => {
+interface PayslipCardProps {
+  item: Payslip;
+  role: string | undefined;
+}
+
+const PayslipCard = ({ item, role }: PayslipCardProps) => {
+  const { downloadFile, isDownloading } = useFileDownload();
   const { t } = useTranslation();
   const router = useRouter();
+
+  return (
+    <Pressable
+      onPress={() => {
+        router.push({
+          pathname: "/payslips/[id]",
+          params: {
+            id: item.id,
+          },
+        });
+      }}
+    >
+      <Card
+        style={{
+          marginBottom: 16,
+          flexDirection: "row",
+          alignItems: "stretch",
+          overflow: "hidden",
+        }}
+      >
+        {/* Accent bar */}
+        <View
+          style={{
+            width: 6,
+            borderTopLeftRadius: 8,
+            borderBottomLeftRadius: 8,
+          }}
+          className="bg-secondary"
+        />
+        <CardContent style={{ flex: 1, padding: 16 }}>
+          <CardHeader>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                {item.payrun?.period}
+              </Text>
+              <Badge variant="outline">
+                <Text style={{ fontWeight: "bold", color: "#4F46E5" }}>
+                  <TranslatableEnum value={item.status} />
+                </Text>
+              </Badge>
+            </View>
+          </CardHeader>
+          <View style={{ marginTop: 12, marginBottom: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: 4,
+              }}
+            >
+              <Text style={{ color: "#888" }}>{t("payslips.paid_days")}</Text>
+              <Text style={{ fontWeight: "600" }}>{item.paid_days}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: 4,
+              }}
+            >
+              <Text style={{ color: "#888" }}>{t("payslips.gross_pay")}</Text>
+              <Text style={{ fontWeight: "600" }}>{item.gross_pay}</Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text style={{ color: "#888" }}>{t("payslips.net_pay")}</Text>
+              <Text style={{ fontWeight: "600" }}>{item.net_pay}</Text>
+            </View>
+          </View>
+          {item.can_download && (
+            <CardFooter
+              style={{ paddingHorizontal: 0, paddingBottom: 0, paddingTop: 8 }}
+            >
+              <Button
+                className="mt-2 w-full"
+                size="sm"
+                onPress={async (e) => {
+                  e.stopPropagation && e.stopPropagation();
+                  const url = `${role}/payslips/${item.id}/pdf`;
+                  await downloadFile(url, `Payslip-${item.id}.pdf`);
+                }}
+                style={{ flexDirection: "row", alignItems: "center" }}
+              >
+                {isDownloading ? (
+                  <LoadingSpinner />
+                ) : (
+                  <DownloadIcon className="text-primary-foreground" />
+                )}
+                <Text style={{ marginLeft: 8, fontWeight: "bold" }}>
+                  {t("components.download")}
+                </Text>
+              </Button>
+            </CardFooter>
+          )}
+        </CardContent>
+      </Card>
+    </Pressable>
+  );
+};
+
+const Payslips = () => {
   const { role } = useUser();
   const service = PayslipService.make(role);
   const { Render } = useListPage<Payslip>({
@@ -32,42 +149,7 @@ const Payslips = () => {
         params,
       );
     },
-    renderItem: ({ item }) => (
-      <Pressable
-        onPress={() => {
-          router.push({
-            pathname: `/payslips/[id]`,
-            params: { id: item.id },
-          });
-        }}
-      >
-        <Card key={item.id} className="mb-4">
-          <CardHeader>
-            <CardTitle className="w-full flex flex-row items-center justify-between">
-              <Badge>
-                <Text>{item.payrun?.period}</Text>
-              </Badge>
-              <Badge variant={"outline"}>
-                <Text>
-                  <TranslatableEnum value={item.status} />
-                </Text>
-              </Badge>
-            </CardTitle>
-            <CardDescription>
-              <LabelValue
-                label={t("payslips.paid_days")}
-                value={item.paid_days}
-              />
-              <LabelValue
-                label={t("payslips.gross_pay")}
-                value={item.gross_pay}
-              />
-              <LabelValue label={t("payslips.net_pay")} value={item.net_pay} />
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </Pressable>
-    ),
+    renderItem: ({ item }) => <PayslipCard item={item} role={role} />,
     queryKey: "payslips",
     enableSearch: true,
   });

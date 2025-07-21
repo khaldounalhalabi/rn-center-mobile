@@ -32,6 +32,8 @@ type NestedKeyOf<ObjectType extends object> = {
 
 type TranslationKey = NestedKeyOf<typeof EnglishTranslations>;
 
+export type { TranslationKey };
+
 export function useTranslation() {
   const t = useCallback(
     (key: TranslationKey, options?: any) => i18n.t(key, options),
