@@ -9,15 +9,67 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardContent,
 } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { AppointmentStatusEnum } from "@/enums/AppointmentStatusEnum";
 import { getEnumValues } from "@/helpers/helpers";
 import useUser from "@/hooks/UserHook";
 import { useTranslation } from "@/localization";
+import type { TranslationKey } from "@/localization";
 import { AppointmentService } from "@/services/AppointmentService";
 import { useRouter } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
+
+interface AppointmentCardProps {
+  item: any;
+  t: (key: TranslationKey, options?: any) => string;
+  router: ReturnType<typeof useRouter>;
+}
+
+const AppointmentCard = ({ item, t, router }: AppointmentCardProps) => (
+  <Pressable
+    onPress={() => {
+      router.push({
+        pathname: `/appointments/[id]`,
+        params: { id: item.id },
+      });
+    }}
+    className="mb-4 flex-row items-stretch overflow-hidden"
+  >
+    {/* Accent bar */}
+    <View className="w-1.5 bg-primary rounded-l-lg" />
+    <Card className="flex-1 p-0 bg-card shadow-sm">
+      <CardHeader>
+        <View className="flex-row justify-between items-center mb-1">
+          <Text className="font-bold text-lg text-card-foreground">
+            {item.customer?.user?.full_name}
+          </Text>
+          <Badge variant="secondary">
+            <Text className="text-card-foreground">{item.date_time}</Text>
+          </Badge>
+        </View>
+        <Badge variant="outline" className="self-start mt-1">
+          <Text className="font-bold text-primary">
+            <TranslatableEnum value={item.status} />
+          </Text>
+        </Badge>
+      </CardHeader>
+      <CardContent>
+        <View className="mt-2">
+          <View className="flex-row justify-between mb-1">
+            <Text className="text-muted-foreground">{t("common.dashboard.sequence")}</Text>
+            <Text className="font-semibold text-card-foreground">{item.appointment_sequence}</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="text-muted-foreground">{t("common.dashboard.serviceName")}</Text>
+            <Text className="font-semibold text-card-foreground">{item.service?.name}</Text>
+          </View>
+        </View>
+      </CardContent>
+    </Card>
+  </Pressable>
+);
 
 const Appointments = () => {
   const { role } = useUser();
@@ -37,42 +89,7 @@ const Appointments = () => {
       );
     },
     renderItem: ({ item }) => (
-      <Pressable
-        onPress={() => {
-          router.push({
-            pathname: `/appointments/[id]`,
-            params: { id: item.id },
-          });
-        }}
-      >
-        <Card key={item.id} className="mb-4">
-          <CardHeader>
-            <CardTitle className="w-full flex flex-row items-center justify-between">
-              <Badge>
-                <Text>{item.customer?.user?.full_name}</Text>
-              </Badge>
-              <Badge variant={"secondary"}>
-                <Text>{item.date_time}</Text>
-              </Badge>
-              <Badge variant={"outline"}>
-                <Text>
-                  <TranslatableEnum value={item.status} />
-                </Text>
-              </Badge>
-            </CardTitle>
-            <CardDescription>
-              <LabelValue
-                label={t("common.dashboard.sequence")}
-                value={item.appointment_sequence}
-              />
-              <LabelValue
-                label={t("common.dashboard.serviceName")}
-                value={item.service?.name}
-              />
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </Pressable>
+      <AppointmentCard item={item} t={t} router={router} />
     ),
     filter(params, setParam) {
       return (

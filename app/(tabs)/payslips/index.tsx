@@ -48,14 +48,13 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
           overflow: "hidden",
         }}
       >
-        {/* Accent bar */}
         <View
           style={{
             width: 6,
             borderTopLeftRadius: 8,
             borderBottomLeftRadius: 8,
           }}
-          className="bg-secondary"
+          className="bg-primary"
         />
         <CardContent style={{ flex: 1, padding: 16 }}>
           <CardHeader>

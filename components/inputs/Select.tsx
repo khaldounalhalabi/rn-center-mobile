@@ -12,6 +12,7 @@ import { Platform, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TranslatableEnum, { useTranslateEnum } from "../TranslatableEnum";
+import { Label } from "../ui/label";
 
 const Select = ({
   data,
@@ -51,6 +52,7 @@ const Select = ({
 
   return (
     <View className="w-full flex flex-col items-start">
+      <Label>{label}</Label>
       <ShadcnSelect
         defaultValue={{
           value:
