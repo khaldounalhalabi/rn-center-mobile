@@ -1922,7 +1922,8 @@
     "status": "Status",
     "actions": "Actions",
     "error": "Error",
-    "date": "Date"
+    "date": "Date",
+    "request_vacation": "Request a vacation"
   },
   "tasks": {
     "title": "Title",

@@ -4,13 +4,13 @@ export const toast = {
   success: (message: string = "") =>
     ToastAndroid.showWithGravity(
       message,
-      ToastAndroid.BOTTOM,
+      ToastAndroid.LONG,
       ToastAndroid.CENTER
     ),
   error: (message: string = "") =>
     ToastAndroid.showWithGravity(
       message,
-      ToastAndroid.BOTTOM,
+      ToastAndroid.LONG,
       ToastAndroid.CENTER
     ),
 };

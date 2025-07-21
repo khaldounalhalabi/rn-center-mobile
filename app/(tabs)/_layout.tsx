@@ -3,6 +3,7 @@ import { Tabs } from "expo-router";
 import {
   Calendar,
   CalendarClock,
+  CalendarIcon,
   DoorOpen,
   HomeIcon,
   Settings,
@@ -56,6 +57,14 @@ const TabLayout = () => {
           options={{
             title: "My Schedule",
             tabBarIcon: ({ color }) => <CalendarClock color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="vacations"
+          options={{
+            title: "My Vacations",
+            tabBarIcon: ({ color }) => <CalendarIcon color={color} />,
           }}
         />
 

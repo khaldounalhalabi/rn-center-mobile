@@ -1,10 +1,11 @@
 import { ApiResponse } from "@/http/Response";
+import { Plus } from "@/lib/icons/icons";
 import { useTranslation } from "@/localization";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { FlatList, ListRenderItem, View } from "react-native";
 import useFilter from "./Filter";
-import LoadingScreen from "./LoadingScreen";
 import LoadingSpinner from "./LoadingSpinner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -25,6 +26,7 @@ interface ListPageProps<DATAITEM> {
 
   renderItem: ListRenderItem<DATAITEM> | null | undefined;
   queryKey?: string;
+  createUrl?: string;
 }
 
 function useListPage<DATAITEM>({
@@ -33,9 +35,11 @@ function useListPage<DATAITEM>({
   renderItem,
   enableSearch = true,
   queryKey,
+  createUrl,
 }: ListPageProps<DATAITEM>) {
   const { t } = useTranslation();
   const { params, setParam, Filter } = useFilter();
+  const router = useRouter();
   const [search, setSearch] = useState<undefined | string>(undefined);
 
   const {
@@ -76,10 +80,21 @@ function useListPage<DATAITEM>({
       <>
         <View className="w-full p-[16px] flex flex-row justify-between items-center gap-3">
           {filter && <Filter>{filter(params, setParam)}</Filter>}
+          {createUrl && (
+            <Button
+              size={"icon"}
+              variant={"secondary"}
+              onPress={() => {
+                router.push(createUrl as any);
+              }}
+            >
+              <Plus className="text-primary"/>
+            </Button>
+          )}
           {enableSearch && (
             <Input
               dataDetectorTypes={"all"}
-              className="w-full"
+              className="w-3/4"
               placeholder={t("table.search")}
               onChangeText={(value) => {
                 if (value.trim().length > 0) {
@@ -93,7 +108,9 @@ function useListPage<DATAITEM>({
         </View>
 
         {isLoading ? (
-          <LoadingScreen />
+          <View className="flex-1 items-center justify-center p-4">
+            <LoadingSpinner className="text-foreground" />
+          </View>
         ) : (
           <FlatList
             contentContainerStyle={{ padding: 16 }}

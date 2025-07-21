@@ -1918,7 +1918,8 @@
     "status": "الحالة",
     "actions": "الخيارات",
     "error": "حصل خطأ",
-    "date": "التاريخ"
+    "date": "التاريخ",
+    "request_vacation": "طلب إجازة"
   },
   "tasks": {
     "title": "العنوان",
