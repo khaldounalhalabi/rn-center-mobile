@@ -45,3 +45,7 @@ google-services.json
 /ios
 /android
 firebase-settings.json
+.idea
+.vscode
+_vscode
+
