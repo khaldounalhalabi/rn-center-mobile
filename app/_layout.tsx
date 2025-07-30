@@ -25,9 +25,20 @@ import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { AppStateStatus, Platform } from "react-native";
 
+import { NotificationProvider } from "@/components/providers/NotificationContext";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -102,6 +113,8 @@ export default function RootLayout() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <UserProvider>
+            <NotificationProvider>
+
             <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
               <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
               <Stack
@@ -112,6 +125,8 @@ export default function RootLayout() {
                 }}
               />
             </ThemeProvider>
+            </NotificationProvider>
+
           </UserProvider>
         </QueryClientProvider>
         <PortalHost />

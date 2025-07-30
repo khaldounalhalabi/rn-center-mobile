@@ -1,16 +1,19 @@
 import AttendanceCards from "@/components/attendance/AttendanceCards";
+import { useNotification } from "@/components/providers/NotificationContext";
 import { useRouter } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
+  const router = useRouter();
+  const { expoPushToken, notification, error } = useNotification();
+
+
   return (
     <SafeAreaView>
       <AttendanceCards />
     </SafeAreaView>
   );
 };
-
 
 export default HomeScreen;
