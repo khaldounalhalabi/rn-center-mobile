@@ -1,10 +1,11 @@
 import useUser from "@/hooks/UserHook";
-import { Slot, useRouter } from "expo-router";
+import { Slot, usePathname, useRouter } from "expo-router";
 import { useEffect } from "react";
 
 export default function AuthLayout() {
   const { setSignInRole, user, signInRole } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
     if (signInRole) {
       if (user) {
@@ -14,8 +15,9 @@ export default function AuthLayout() {
       }
     }
   }, [user]);
+
   useEffect(() => {
-    if (!signInRole) {
+    if (!signInRole && pathname !== "/role-select") {
       router.replace("/role-select");
     }
   }, []);

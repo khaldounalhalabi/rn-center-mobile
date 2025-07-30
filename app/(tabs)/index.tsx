@@ -5,7 +5,6 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
-  const router = useRouter();
   return (
     <SafeAreaView>
       <AttendanceCards />
