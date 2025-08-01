@@ -1,5 +1,6 @@
 import "@/global.css";
 
+import { NotificationProvider } from "@/components/providers/NotificationContext";
 import UserProvider from "@/components/providers/UserProvider";
 import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
 import { NAV_THEME } from "@/lib/constants";
@@ -18,18 +19,22 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import isBetween from "dayjs/plugin/isBetween";
 import * as Network from "expo-network";
+import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import * as Updates from "expo-updates";
 import * as React from "react";
-import { AppStateStatus, Platform } from "react-native";
-
-import { NotificationProvider } from "@/components/providers/NotificationContext";
-import dayjs from "dayjs";
-import isBetween from "dayjs/plugin/isBetween";
+import { useEffect } from "react";
+import { AppStateStatus, I18nManager, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import * as Notifications from "expo-notifications";
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from "react-native-reanimated";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -38,6 +43,11 @@ Notifications.setNotificationHandler({
     shouldPlaySound: false,
     shouldSetBadge: false,
   }),
+});
+
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false,
 });
 
 export const unstable_settings = {
@@ -59,6 +69,19 @@ export {
 } from "expo-router";
 
 export default function RootLayout() {
+  useEffect(() => {
+    async function fixDirection() {
+      if (I18nManager.isRTL) {
+        I18nManager.allowRTL(false);
+        I18nManager.forceRTL(false);
+
+        if (!Updates.isEmergencyLaunch) {
+          await Updates.reloadAsync();
+        }
+      }
+    }
+    fixDirection();
+  }, []);
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -114,19 +137,19 @@ export default function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <UserProvider>
             <NotificationProvider>
-
-            <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-              <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-              <Stack
-                screenOptions={{
-                  headerShown: true,
-                  headerRight: () => <ThemeToggle />,
-                  headerTitle: "Reslan Center",
-                }}
-              />
-            </ThemeProvider>
+              <ThemeProvider
+                value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+              >
+                <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+                <Stack
+                  screenOptions={{
+                    headerShown: true,
+                    headerRight: () => <ThemeToggle />,
+                    headerTitle: "Reslan Center",
+                  }}
+                />
+              </ThemeProvider>
             </NotificationProvider>
-
           </UserProvider>
         </QueryClientProvider>
         <PortalHost />

@@ -5,6 +5,7 @@ import { Platform } from "react-native";
 
 export async function registerForPushNotifications() {
   if (Platform.OS == "android") {
+    console.log("Heeeeeeeeeeeer")
     await Notifications.setNotificationChannelAsync("default", {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
@@ -14,6 +15,7 @@ export async function registerForPushNotifications() {
   }
 
   if (Device.isDevice) {
+    console.log("Is device")
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -39,16 +41,19 @@ export async function registerForPushNotifications() {
     try {
       const pushTokenString = (
         await Notifications.getExpoPushTokenAsync({
+
           projectId,
         })
       ).data;
 
-      console.log(pushTokenString);
+      console.log(`Push token is ${pushTokenString}`);
       return pushTokenString;
     } catch (error: unknown) {
+      console.error(error);
       throw new Error(`${error}`);
     }
   } else {
+    console.log("Not device")
     throw new Error("Must use physical device for push notifications ");
   }
 }

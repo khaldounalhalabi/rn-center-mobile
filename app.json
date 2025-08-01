@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "planet_of_medicine",
-    "slug": "planet_of_medicine",
+    "name": "reslan_alnaal_center",
+    "slug": "reslan_alnaal_center",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "planetofmedicine",
+    "scheme": "reslanalnaalcenter",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -18,12 +18,12 @@
       "bundleIdentifier": "reslan.alnaal.center"
     },
     "android": {
+      "package": "reslan.alnaal.center",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.mohammed.js.planet_of_medicien",
       "googleServicesFile": "./google-services.json"
     },
     "web": {

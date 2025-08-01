@@ -48,7 +48,10 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
   useEffect(() => {
     registerForPushNotifications().then(
-      (token) => setExpoPushToken(token),
+      (token) => {
+        console.log(token);
+        setExpoPushToken(token)
+      },
       (error) => setError(error),
     );
 

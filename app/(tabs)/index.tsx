@@ -8,6 +8,7 @@ const HomeScreen = () => {
   const router = useRouter();
   const { expoPushToken, notification, error } = useNotification();
 
+  console.log(expoPushToken);
 
   return (
     <SafeAreaView>
