@@ -1,5 +1,6 @@
 import "@/global.css";
 
+import ProfileButton from "@/components/profile/ProfileButton";
 import NotificationProvider from "@/components/providers/NotificationProvider";
 import UserProvider from "@/components/providers/UserProvider";
 import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
@@ -144,8 +145,13 @@ export default function RootLayout() {
                 <Stack
                   screenOptions={{
                     headerShown: true,
-                    headerRight: () => <ThemeToggle />,
-                    headerTitle: "Reslan Center",
+                    headerRight: () => (
+                      <>
+                        <ThemeToggle />
+                      </>
+                    ),
+                    headerTitle: "",
+                    headerLeft: () => <ProfileButton />,
                   }}
                 />
               </ThemeProvider>

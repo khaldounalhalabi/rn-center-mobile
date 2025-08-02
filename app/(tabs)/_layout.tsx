@@ -9,7 +9,6 @@ import {
   CheckCheck,
   DoorOpen,
   HomeIcon,
-  Settings,
   TentTree,
   WalletCards,
 } from "lucide-react-native";
@@ -22,16 +21,9 @@ const TabLayout = () => {
       <Tabs
         screenOptions={{
           headerShown: false,
+          animation: "shift",
         }}
       >
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: "Home",
-            tabBarIcon: ({ color }) => <HomeIcon color={color} />,
-          }}
-        />
-
         <Tabs.Screen
           name="holidays"
           options={{
@@ -51,6 +43,14 @@ const TabLayout = () => {
         />
 
         <Tabs.Screen
+          name="index"
+          options={{
+            title: "Home",
+            tabBarIcon: ({ color }) => <HomeIcon color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
           name="attendance"
           options={{
             title: "Attendance",
@@ -63,6 +63,7 @@ const TabLayout = () => {
           options={{
             title: "My Schedule",
             tabBarIcon: ({ color }) => <CalendarClock color={color} />,
+            href: null,
           }}
         />
 
@@ -71,6 +72,7 @@ const TabLayout = () => {
           options={{
             title: "My Vacations",
             tabBarIcon: ({ color }) => <CalendarIcon color={color} />,
+            href: null,
           }}
         />
 
@@ -95,7 +97,7 @@ const TabLayout = () => {
           name="account"
           options={{
             title: "Settings",
-            tabBarIcon: ({ color }) => <Settings color={color} />,
+            href: null,
           }}
         />
       </Tabs>

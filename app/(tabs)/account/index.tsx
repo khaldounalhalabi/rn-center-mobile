@@ -1,6 +1,11 @@
 import { Text } from "@/components/ui/text";
 import useUser from "@/hooks/UserHook";
-import { PowerOff, Settings, User2Icon } from "@/lib/icons/icons";
+import {
+  CalendarClockIcon,
+  CalendarIcon,
+  PowerOff,
+  User2Icon,
+} from "@/lib/icons/icons";
 import { AuthService } from "@/services/AuthService";
 import { useRouter } from "expo-router";
 import * as React from "react";
@@ -28,10 +33,26 @@ const Index = () => {
               <User2Icon className="text-primary" />
             </View>
           </Pressable>
-          <Pressable className="w-full">
+          <Pressable
+            onPress={() => {
+              router.push("/vacations");
+            }}
+            className="w-full"
+          >
             <View className="w-full flex flex-row items-center justify-between p-5 border-b border-b-secondary">
-              <Text>Settings</Text>
-              <Settings className="text-primary" />
+              <Text>My Vacations</Text>
+              <CalendarIcon className="text-primary" />
+            </View>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              router.push("/schedule");
+            }}
+            className="w-full"
+          >
+            <View className="w-full flex flex-row items-center justify-between p-5 border-b border-b-secondary">
+              <Text>My schedule</Text>
+              <CalendarClockIcon className="text-primary" />
             </View>
           </Pressable>
           <Pressable className="w-full" onPress={logout}>

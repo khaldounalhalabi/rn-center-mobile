@@ -2,6 +2,8 @@ import {
   AlertCircleIcon,
   Award,
   Calendar,
+  CalendarClockIcon,
+  CalendarIcon,
   Clock,
   DownloadIcon,
   Loader2,
@@ -28,14 +30,20 @@ iconWithClassName(Calendar);
 iconWithClassName(TrendingUp);
 iconWithClassName(Target);
 iconWithClassName(Award);
-iconWithClassName(DownloadIcon)
-iconWithClassName(Plus)
+iconWithClassName(DownloadIcon);
+iconWithClassName(Plus);
+iconWithClassName(CalendarClockIcon);
+iconWithClassName(CalendarIcon);
 export {
   AlertCircleIcon,
   Award,
   Calendar,
+  CalendarClockIcon,
+  CalendarIcon,
   Clock,
+  DownloadIcon,
   Loader2,
+  Plus,
   PowerOff,
   Settings,
   SlidersHorizontal,
@@ -43,6 +51,4 @@ export {
   Timer,
   TrendingUp,
   User2Icon,
-  DownloadIcon,
-  Plus
 };
