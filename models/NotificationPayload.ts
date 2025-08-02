@@ -1,6 +1,5 @@
-import PermissionEnum from "@/enums/PermissionEnum";
-import { RoleEnum } from "@/enums/RoleEnum";
 import { getNestedPropertyValue } from "@/helpers/helpers";
+import { Href } from "expo-router";
 
 export class NotificationPayload {
   private message_en: string = "";
@@ -45,7 +44,10 @@ export class NotificationPayload {
     return this.notification_type;
   }
 
-  public getData(key: string) {
+  public getData(key?: string) {
+    if (!key) {
+      return this.data;
+    }
     return getNestedPropertyValue(this.data, key);
   }
 
@@ -78,40 +80,55 @@ export class NotificationPayload {
     }
   }
 
-  public getUrl(role: RoleEnum, permissions: PermissionEnum[]): string {
+  public getUrl(): Href {
     const type = this.type;
     switch (type) {
       case NotificationsTypeEnum.NewVacationRequest:
-        return `/${role}/vacations?vacation_id=${this.getData("vacation_id")}`;
+        return `/vacations`;
       case NotificationsTypeEnum.PayslipStatusChanged:
-        return `/${role}/payruns/${this.getData("payrun_id")}?payslip_id=${this.getData("payslip_id")}`;
+        return {
+          pathname: "/payslips/[id]",
+          params: {
+            id: this.getData("payslip_id"),
+          },
+        };
 
       case NotificationsTypeEnum.AppointmentEvent:
         if (this.getData("event") != "DELETED") {
-          return `/${role}/appointment/${this.getData("appointment_id")}`;
+          return {
+            pathname: "/appointments/[id]",
+            params: {
+              id: this.getData("appointment_id"),
+            },
+          };
         } else {
-          return "";
+          return "/appointments";
         }
 
       case NotificationsTypeEnum.NewPayrunAdded:
-        return `/${role}/payslips?payslip_id=${this.getData("payslip_id")}`;
+        return `/payslips`;
       case NotificationsTypeEnum.PayslipUpdated:
-        return `/${role}/payslips?payslip_id=${this.getData("payslip_id")}`;
+        return {
+          pathname: "/payslips/[id]",
+          params: {
+            id: this.getData("payslip_id"),
+          },
+        };
       case NotificationsTypeEnum.NewVacationAdded:
-        return `/${role}/vacations?vacation_id=${this.getData("vacation_id")}`;
+        return `/vacations`;
       case NotificationsTypeEnum.VacationStatusChanged:
-        return `/${role}/vacations?vacation_id=${this.getData("vacation_id")}`;
+        return `/vacations`;
       case NotificationsTypeEnum.VacationUpdated:
-        return `/${role}/vacations?vacation_id=${this.getData("vacation_id")}`;
+        return `/vacations`;
       case NotificationsTypeEnum.NewTaskComment:
-        return `/${role}/tasks?task_id=${this.getData("task_id")}`;
+        return `/tasks`;
       case NotificationsTypeEnum.TaskStatusChanged:
-        return `/${role}/tasks?task_id=${this.getData("task_id")}`;
+        return `/tasks`;
       case NotificationsTypeEnum.NewTaskAssigned:
-        return `/${role}/tasks?task_id=${this.getData("task_id")}`;
+        return `/tasks`;
 
       default:
-        return "";
+        return "/";
     }
   }
 }

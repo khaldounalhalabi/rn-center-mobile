@@ -1,33 +1,35 @@
 import AttendanceDayCard from "@/components/attendance/AttendanceDayCard";
 import Select from "@/components/inputs/Select";
 import useListPageNoPagination from "@/components/ListPageNoPagination";
+import NotificationHandler from "@/components/NotificationHandler";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import useUser from "@/hooks/UserHook";
-import { useTranslation } from "@/localization";
+import {
+  NotificationPayload,
+  RealTimeEventsTypeEnum,
+} from "@/models/NotificationPayload";
 import AttendanceLogService from "@/services/AttendanceLogService";
 import dayjs from "dayjs";
-import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useCallback } from "react";
 import { View } from "react-native";
 
 const Index = () => {
   const { role } = useUser();
   const service = AttendanceLogService.make(role);
-  const { t } = useTranslation();
-  const router = useRouter();
-  const [year, setYear] = useState<string>(dayjs().format("YYYY"));
-  const [month, setMonth] = useState<number>(dayjs().month() + 1);
 
   const months = Array.from({ length: 12 }, (_, i) => ({
     label: dayjs().month(i).format("MMMM"),
     value: (i + 1).toString(),
   }));
 
-  const { Render } = useListPageNoPagination({
+  const { Render, refetch } = useListPageNoPagination({
     queryKey: "attendance_logs",
-    api(search, params) {
-      return service.mine(params?.year ?? year, params?.month ?? month);
+    api(_search, params) {
+      return service.mine(
+        params?.year ?? dayjs().format("YYYY"),
+        params?.month ?? dayjs().month() + 1,
+      );
     },
     renderItem: ({ item }) => {
       const date = (item as any).key;
@@ -40,7 +42,7 @@ const Index = () => {
           <View className="flex-1">
             <Text className="text-sm font-medium mb-2">Year</Text>
             <Input
-              defaultValue={params?.year ?? year}
+              defaultValue={params?.year ?? dayjs().format("YYYY")}
               onChangeText={(v) => {
                 setParam("year", v);
               }}
@@ -53,7 +55,7 @@ const Index = () => {
             <Text className="text-sm font-medium mb-2">Month</Text>
             <Select
               data={months}
-              selected={params?.month ?? month?.toString()}
+              selected={params?.month ?? `${dayjs().month() + 1}`}
               onChange={(value) => {
                 setParam("month", value);
               }}
@@ -65,10 +67,23 @@ const Index = () => {
     enableSearch: false,
   });
 
+  const handleNotification = useCallback(
+    (payload: NotificationPayload) => {
+      console.log("Refetching");
+      if (payload.type == RealTimeEventsTypeEnum.AttendanceEdited) {
+        refetch();
+      }
+    },
+    [refetch],
+  );
+
   return (
-    <View className="flex-1 bg-background">
-      <Render />
-    </View>
+    <>
+      <NotificationHandler handle={handleNotification} isPermanent/>
+      <View className="flex-1 bg-background">
+        <Render />
+      </View>
+    </>
   );
 };
 

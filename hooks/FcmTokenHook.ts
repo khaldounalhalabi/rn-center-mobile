@@ -3,10 +3,14 @@ import messaging from "@react-native-firebase/messaging";
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
+import useUser from "./UserHook";
 
 function useFcmToken() {
   const [token, setToken] = useState("");
+  const { user } = useUser();
 
+  console.log("Fcm Token : " + token);
+  
   const getToken = async () => {
     if (Platform.OS == "android") {
       await Notifications.setNotificationChannelAsync("default", {
@@ -29,19 +33,13 @@ function useFcmToken() {
 
     try {
       const currentToken = await messaging().getToken();
-      let prevToken = await GET<{ fcm_token: string }>(`/fcm/get-token`).then(
-        (res) => {
-          return res?.data?.fcm_token;
-        },
-      );
-      if (currentToken != prevToken) {
-        await POST(`/fcm/store-token`, {
-          fcm_token: currentToken,
-        });
-        setToken(currentToken);
-      } else {
-        setToken(currentToken);
-      }
+      await GET<{ fcm_token: string }>(`/fcm/get-token`).then((res) => {
+        return res?.data?.fcm_token;
+      });
+      await POST(`/fcm/store-token`, {
+        fcm_token: currentToken,
+      });
+      setToken(currentToken);
     } catch (error: unknown) {
       console.error("Error getting FCM token");
       console.error(error);
@@ -51,7 +49,7 @@ function useFcmToken() {
 
   useEffect(() => {
     getToken();
-  }, []);
+  }, [user]);
 
   return token;
 }

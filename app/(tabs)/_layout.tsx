@@ -1,9 +1,12 @@
 import AuthProvider from "@/components/providers/AuthProvider";
+import { RoleEnum } from "@/enums/RoleEnum";
+import useUser from "@/hooks/UserHook";
 import { Tabs } from "expo-router";
 import {
   Calendar,
   CalendarClock,
   CalendarIcon,
+  CheckCheck,
   DoorOpen,
   HomeIcon,
   Settings,
@@ -13,6 +16,7 @@ import {
 import React from "react";
 
 const TabLayout = () => {
+  const { role } = useUser();
   return (
     <AuthProvider>
       <Tabs
@@ -41,6 +45,8 @@ const TabLayout = () => {
           options={{
             title: "Appointments",
             tabBarIcon: ({ color }) => <Calendar color={color} />,
+            href:
+              role == RoleEnum.DOCTOR ? { pathname: "/appointments" } : null,
           }}
         />
 
@@ -73,6 +79,15 @@ const TabLayout = () => {
           options={{
             title: "Payslips",
             tabBarIcon: ({ color }) => <WalletCards color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="tasks"
+          options={{
+            title: "Tasks",
+            tabBarIcon: ({ color }) => <CheckCheck color={color} />,
+            href: role == RoleEnum.SECRETARY ? { pathname: "/tasks" } : null,
           }}
         />
 

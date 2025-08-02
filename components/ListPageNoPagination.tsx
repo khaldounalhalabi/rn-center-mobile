@@ -71,7 +71,7 @@ function useListPageNoPagination<DATAITEM>({
     }
 
     return [];
-  }, [rawData, transformData]);
+  }, [rawData, transformData, isRefetching, isLoading]);
 
   const Render = () => {
     if (isError)

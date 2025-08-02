@@ -1,21 +1,22 @@
 import useFcmToken from "@/hooks/FcmTokenHook";
 import useUser from "@/hooks/UserHook";
 import { NotificationPayload } from "@/models/NotificationPayload";
+import { NotificationService } from "@/services/NotificationService";
 import messaging, {
   FirebaseMessagingTypes,
 } from "@react-native-firebase/messaging";
+import * as Notifications from "expo-notifications";
+import { useRouter } from "expo-router";
 import {
   createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
-  useCallback,
   useEffect,
   useState,
 } from "react";
-import RemoteMessage = FirebaseMessagingTypes.RemoteMessage;
-import * as Notifications from "expo-notifications";
 
+import RemoteMessage = FirebaseMessagingTypes.RemoteMessage;
 
 export const NotificationsHandlersContext = createContext<Dispatch<
   SetStateAction<NotificationHandler[]>
@@ -29,60 +30,97 @@ export interface NotificationHandler {
 }
 
 const NotificationProvider = ({ children }: { children?: ReactNode }) => {
+  const router = useRouter();
   const fcmToken = useFcmToken();
-  console.log(fcmToken);
   const [handlers, setHandlers] = useState<NotificationHandler[]>([]);
-  const { user } = useUser();
+  const { user, role } = useUser();
 
-  const handleMessage = useCallback(
-    async (payload: RemoteMessage) => {
-      console.log(payload);
-      const notification = new NotificationPayload(payload?.data ?? {});
+  console.log(handlers);
+
+  const handleMessage = async (payload: RemoteMessage) => {
+    console.log(payload);
+    const notification = new NotificationPayload(payload?.data ?? {});
+    console.log("Notification type:", notification.type);
+    console.log("Active handlers count:", handlers.length);
+    handlers.forEach((handler) => {
+      try {
+        handler.fn(notification);
+      } catch (error) {
+        console.error("Error while calling notification handler", error);
+      }
+    });
+
+    if (!notification.isNotification()) return;
+
+    // Use Expo notification to display
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: notification.title,
+        body: notification.message,
+        data: payload.data,
+      },
+      trigger: null,
+    });
+  };
+
+  useEffect(() => {
+    // Foreground
+    const unsubscribe = messaging().onMessage((message) => {
+      console.log(message);
+      handleMessage(message);
+    });
+    return unsubscribe;
+  }, [handlers, fcmToken, user]);
+
+  useEffect(() => {
+    // Background
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log(remoteMessage);
+      const notification = new NotificationPayload(remoteMessage?.data ?? {});
       handlers.forEach((handler) => {
         try {
           handler.fn(notification);
         } catch (error) {
-          console.error("Error while calling notification handler");
-          console.error(error);
+          console.error("Error while calling notification handler", error);
         }
       });
-
-      if (!notification.isNotification()) {
-        return;
-      }
+      const notificationsCount = (
+        await NotificationService.make(role).unreadCount()
+      ).data.unread_count;
+      await Notifications.setBadgeCountAsync(notificationsCount ?? 0);
 
       await Notifications.scheduleNotificationAsync({
         content: {
           title: notification.title,
           body: notification.message,
+          data: remoteMessage.data,
         },
-        trigger: null, // show immediately
+        trigger: null,
+      });
+    });
+
+    // Taps (foreground/background/closed)
+    const tapSubscription =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        const data = response.notification.request.content.data;
+        const notification = new NotificationPayload(data);
+        router.push(notification.getUrl() as any);
       });
 
-      // toast.success(
-      //   <Link href={notification.getUrl()}>
-      //     {t("components.new_notification")}
-      //   </Link>,
-      //   {
-      //     description: notification?.message,
-      //     action: {
-      //       label: t("components.show"),
-      //       onClick: () => {
-      //         router.push({ url: notification.getUrl() });
-      //       },
-      //     },
-      //     icon: <Bell />,
-      //   },
-      // );
-    },
-    [handlers],
-  );
+    // Handle if app opened from closed state
+    (async () => {
+      const response = await Notifications.getLastNotificationResponseAsync();
+      if (response) {
+        const data = response.notification.request.content.data;
+        const notification = new NotificationPayload(data);
+        router.push(notification.getUrl() as any);
+      }
+    })();
 
-  useEffect(() => {
-    return messaging().onMessage(async (remoteMessage) => {
-      await handleMessage(remoteMessage);
-    });
-  }, [handlers, fcmToken, user]);
+    return () => {
+      tapSubscription.remove();
+    };
+  }, [router, role]);
 
   return (
     <NotificationsHandlersContext.Provider value={setHandlers}>

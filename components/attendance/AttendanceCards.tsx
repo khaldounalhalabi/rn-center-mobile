@@ -12,11 +12,13 @@ import {
 } from "@/lib/icons/icons";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/localization";
+import { RealTimeEventsTypeEnum } from "@/models/NotificationPayload";
 import AttendanceLogService from "@/services/AttendanceLogService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import LoadingSpinner from "../LoadingSpinner";
+import NotificationHandler from "../NotificationHandler";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -103,16 +105,16 @@ const AttendanceCards = () => {
       contentContainerStyle={styles.scrollViewContent}
     >
       <View className="w-full">
-        {/* <NotificationHandler
-        handle={(payload) => {
-          if (payload.type == RealTimeEventsTypeEnum.AttendanceEdited) {
-            refetchLastLog().then(() => {
-              refetchStats();
-            });
-          }
-        }}
-        isPermanent
-      /> */}
+        <NotificationHandler
+          handle={(payload) => {
+            if (payload.type == RealTimeEventsTypeEnum.AttendanceEdited) {
+              refetchLastLog().then(() => {
+                refetchStats();
+              });
+            }
+          }}
+          isPermanent
+        />
         <View className="grid grid-cols-1 gap-4 p-[16px]">
           <View className="col-span-1 md:col-span-3">
             <Alert icon={AlertCircleIcon} variant={"destructive"}>
