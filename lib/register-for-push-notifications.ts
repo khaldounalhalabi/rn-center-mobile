@@ -1,11 +1,11 @@
-import Contstants from "expo-constants";
+import messaging from "@react-native-firebase/messaging";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 
 export async function registerForPushNotifications() {
   if (Platform.OS == "android") {
-    console.log("Heeeeeeeeeeeer")
+    console.log("Heeeeeeeeeeeer");
     await Notifications.setNotificationChannelAsync("default", {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
@@ -14,46 +14,28 @@ export async function registerForPushNotifications() {
     });
   }
 
-  if (Device.isDevice) {
-    console.log("Is device")
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-
-    if (finalStatus !== "granted") {
-      throw new Error(
-        "Permission Not Granted To Get Push Token For Push Notification!",
-      );
-    }
-
-    const projectId =
-      Contstants?.expoConfig?.extra?.eas?.projectId ??
-      Contstants?.expoConfig?.projectId;
-
-    if (!projectId) {
-      throw new Error("Project ID not found");
-    }
-
-    try {
-      const pushTokenString = (
-        await Notifications.getExpoPushTokenAsync({
-
-          projectId,
-        })
-      ).data;
-
-      console.log(`Push token is ${pushTokenString}`);
-      return pushTokenString;
-    } catch (error: unknown) {
-      console.error(error);
-      throw new Error(`${error}`);
-    }
-  } else {
-    console.log("Not device")
+  if (!Device.isDevice) {
+    console.log("Not device");
     throw new Error("Must use physical device for push notifications ");
+  }
+
+  console.log("Is device");
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (!enabled) {
+    console.error("Notifications not enabled");
+    throw new Error("Notifications not enabled");
+  }
+
+  try {
+    const pushTokenString = await messaging().getToken();
+    console.log(`Push token is ${pushTokenString}`);
+    return pushTokenString;
+  } catch (error: unknown) {
+    console.error(error);
+    throw new Error(`${error}`);
   }
 }

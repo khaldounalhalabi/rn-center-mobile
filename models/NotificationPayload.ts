@@ -1,7 +1,6 @@
-import { getClientCookie } from "@/actions/ClientCookies";
 import PermissionEnum from "@/enums/PermissionEnum";
 import { RoleEnum } from "@/enums/RoleEnum";
-import { getNestedPropertyValue } from "@/helpers/ObjectHelpers";
+import { getNestedPropertyValue } from "@/helpers/helpers";
 
 export class NotificationPayload {
   private message_en: string = "";
@@ -71,7 +70,7 @@ export class NotificationPayload {
   }
 
   public get message(): string {
-    const locale = getClientCookie("NEXT_LOCALE") ?? "en";
+    const locale = "en"; // TODO:: fix this for locales
     if (locale == "ar") {
       return this.messageAr;
     } else {

@@ -1,6 +1,6 @@
 import "@/global.css";
 
-import { NotificationProvider } from "@/components/providers/NotificationContext";
+import NotificationProvider from "@/components/providers/NotificationProvider";
 import UserProvider from "@/components/providers/UserProvider";
 import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
 import { NAV_THEME } from "@/lib/constants";
