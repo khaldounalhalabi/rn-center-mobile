@@ -1,9 +1,11 @@
 import "@/global.css";
 
+import { LanguageToggleButton } from "@/components/LanguageToggleButton";
 import ProfileButton from "@/components/profile/ProfileButton";
 import NotificationProvider from "@/components/providers/NotificationProvider";
 import UserProvider from "@/components/providers/UserProvider";
 import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
+import { LanguageProvider } from "@/context/LanguageProvider";
 import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "@/lib/useColorScheme";
 import "@/localization";
@@ -15,7 +17,6 @@ import {
 } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
 import {
-  focusManager,
   onlineManager,
   QueryClient,
   QueryClientProvider,
@@ -27,10 +28,8 @@ import * as Network from "expo-network";
 import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import * as Updates from "expo-updates";
 import * as React from "react";
-import { useEffect } from "react";
-import { AppStateStatus, I18nManager, Platform } from "react-native";
+import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   configureReanimatedLogger,
@@ -70,19 +69,6 @@ export {
 } from "expo-router";
 
 export default function RootLayout() {
-  useEffect(() => {
-    async function fixDirection() {
-      if (I18nManager.isRTL) {
-        I18nManager.allowRTL(false);
-        I18nManager.forceRTL(false);
-
-        if (!Updates.isEmergencyLaunch) {
-          await Updates.reloadAsync();
-        }
-      }
-    }
-    fixDirection();
-  }, []);
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -107,11 +93,6 @@ export default function RootLayout() {
     if (hasMounted.current) {
       return;
     }
-
-    if (Platform.OS === "web") {
-      // Adds the background color to the html element to prevent white background on overscroll.
-      document.documentElement.classList.add("bg-background");
-    }
     setIsColorSchemeLoaded(true);
     hasMounted.current = true;
   }, []);
@@ -127,36 +108,34 @@ export default function RootLayout() {
     return eventSubscription.remove;
   });
 
-  function onAppStateChange(status: AppStateStatus) {
-    if (Platform.OS !== "web") {
-      focusManager.setFocused(status === "active");
-    }
-  }
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
-          <UserProvider>
-            <NotificationProvider>
-              <ThemeProvider
-                value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-              >
-                <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-                <Stack
-                  screenOptions={{
-                    headerShown: true,
-                    headerRight: () => (
-                      <>
-                        <ThemeToggle />
-                      </>
-                    ),
-                    headerTitle: "",
-                    headerLeft: () => <ProfileButton />,
-                  }}
-                />
-              </ThemeProvider>
-            </NotificationProvider>
-          </UserProvider>
+          <LanguageProvider>
+            <UserProvider>
+              <NotificationProvider>
+                <ThemeProvider
+                  value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+                >
+                  <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+                  <Stack
+                    screenOptions={{
+                      headerShown: true,
+                      headerRight: () => (
+                        <>
+                          <ThemeToggle />
+                          <LanguageToggleButton />
+                        </>
+                      ),
+                      headerTitle: "",
+                      headerLeft: () => <ProfileButton />,
+                    }}
+                  />
+                </ThemeProvider>
+              </NotificationProvider>
+            </UserProvider>
+          </LanguageProvider>
         </QueryClientProvider>
         <PortalHost />
       </GestureHandlerRootView>

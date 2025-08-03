@@ -33,7 +33,15 @@
     },
     "plugins": [
       "expo-router",
-      "expo-localization",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "ja"],
+            "android": ["en", "ja"]
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -54,7 +62,8 @@
       "router": {},
       "eas": {
         "projectId": "2d3b00aa-7131-4841-8ec1-b1e2e704f3ee"
-      }
+      },
+      "supportsRTL": true
     },
     "owner": "khaldounalhalabi"
   }

@@ -2,7 +2,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
   Select as ShadcnSelect,
@@ -50,6 +49,15 @@ const Select = ({
     right: 12,
   };
 
+  const defaultLabel =
+    (isOption(defaultValue)
+      ? translated
+        ? tEnum(defaultValue.label)
+        : defaultValue?.label
+      : translated
+        ? tEnum(defaultValue)
+        : defaultValue) ?? "";
+
   return (
     <View className="w-full flex flex-col items-start">
       <Label>{label}</Label>
@@ -58,7 +66,9 @@ const Select = ({
           value:
             (isOption(defaultValue) ? defaultValue?.value : defaultValue) ?? "",
           label:
-            (isOption(defaultValue) ? defaultValue?.label : defaultValue) ?? "",
+            defaultLabel.length > 0
+              ? defaultLabel
+              : t("components.select_item"),
         }}
         onValueChange={(option) => {
           if (onChange && option?.value) {
@@ -75,7 +85,6 @@ const Select = ({
         <SelectContent insets={contentInsets} side="top">
           <ScrollView className="max-h-[250px]">
             <SelectGroup>
-              <SelectLabel>{label ?? ""}</SelectLabel>
               {data.map((item, index) => (
                 <SelectItem
                   value={

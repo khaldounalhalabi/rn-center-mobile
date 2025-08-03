@@ -37,7 +37,7 @@ export type { TranslationKey };
 export function useTranslation() {
   const t = useCallback(
     (key: TranslationKey, options?: any) => i18n.t(key, options),
-    [],
+    [i18n.locale],
   );
-  return { t, locale: i18n.locale };
+  return { t, locale: i18n.locale, i18n };
 }
