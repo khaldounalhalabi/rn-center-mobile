@@ -1,4 +1,4 @@
-import { getToken } from "@/helpers/helpers";
+import { getLocale, getToken } from "@/helpers/helpers";
 import { ApiErrorType, ApiResponse } from "@/http/Response";
 import AppConfig from "@/lib/Config";
 import axios, { AxiosError, AxiosResponse } from "axios";
@@ -42,12 +42,12 @@ const http = async <T>(
   params?: object,
   data?: object | undefined,
 ): Promise<ApiResponse<T>> => {
-  let lang = "en";
+  let lang = await getLocale();
   const token = await getToken();
   const h = {
     "Content-Type": "multipart/form-data",
     Accept: "application/json",
-    "Accept-Language": `${lang ? lang : "en"}`,
+    "Accept-Language": `${lang ?? "en"}`,
     Authorization: `Bearer ${token}`,
     "Access-Control-Allow-Origin": "*",
   };

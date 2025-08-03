@@ -6,6 +6,7 @@ import {
   CalendarIcon,
   Clock,
   DownloadIcon,
+  Languages,
   Loader2,
   Plus,
   PowerOff,
@@ -34,6 +35,7 @@ iconWithClassName(DownloadIcon);
 iconWithClassName(Plus);
 iconWithClassName(CalendarClockIcon);
 iconWithClassName(CalendarIcon);
+iconWithClassName(Languages);
 export {
   AlertCircleIcon,
   Award,
@@ -42,6 +44,7 @@ export {
   CalendarIcon,
   Clock,
   DownloadIcon,
+  Languages,
   Loader2,
   Plus,
   PowerOff,

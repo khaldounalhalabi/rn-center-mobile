@@ -1,6 +1,7 @@
 import AuthProvider from "@/components/providers/AuthProvider";
 import { RoleEnum } from "@/enums/RoleEnum";
 import useUser from "@/hooks/UserHook";
+import { useTranslation } from "@/localization";
 import { Tabs } from "expo-router";
 import {
   Calendar,
@@ -16,6 +17,7 @@ import React from "react";
 
 const TabLayout = () => {
   const { role } = useUser();
+  const { t } = useTranslation();
   return (
     <AuthProvider>
       <Tabs
@@ -27,7 +29,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="holidays"
           options={{
-            title: "Holidays",
+            title: t("holidays.holidays"),
             tabBarIcon: ({ color }) => <TentTree color={color} />,
           }}
         />
@@ -35,7 +37,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="appointments"
           options={{
-            title: "Appointments",
+            title: t("landing.appointments"),
             tabBarIcon: ({ color }) => <Calendar color={color} />,
             href:
               role == RoleEnum.DOCTOR ? { pathname: "/appointments" } : null,
@@ -45,7 +47,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="index"
           options={{
-            title: "Home",
+            title: t("landing.home"),
             tabBarIcon: ({ color }) => <HomeIcon color={color} />,
           }}
         />
@@ -53,7 +55,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="attendance"
           options={{
-            title: "Attendance",
+            title: t("sideBar.my_attendance"),
             tabBarIcon: ({ color }) => <DoorOpen color={color} />,
           }}
         />
@@ -61,7 +63,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="schedule"
           options={{
-            title: "My Schedule",
+            title: t("sideBar.my_schedule"),
             tabBarIcon: ({ color }) => <CalendarClock color={color} />,
             href: null,
           }}
@@ -70,7 +72,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="vacations"
           options={{
-            title: "My Vacations",
+            title: t("sideBar.vacations"),
             tabBarIcon: ({ color }) => <CalendarIcon color={color} />,
             href: null,
           }}
@@ -79,7 +81,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="payslips"
           options={{
-            title: "Payslips",
+            title: t("payslips.payslips"),
             tabBarIcon: ({ color }) => <WalletCards color={color} />,
           }}
         />
@@ -87,7 +89,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="tasks"
           options={{
-            title: "Tasks",
+            title: t("tasks.tasks"),
             tabBarIcon: ({ color }) => <CheckCheck color={color} />,
             href: role == RoleEnum.SECRETARY ? { pathname: "/tasks" } : null,
           }}

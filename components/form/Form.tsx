@@ -84,7 +84,7 @@ const Form = ({
           className="flex flex-row justify-center gap-3 items-center w-full"
         >
           <Text>{buttonText}</Text>
-          {methods.formState.isSubmitting && <LoadingSpinner />}
+          {methods.formState.isSubmitting && <LoadingSpinner size={16}/>}
         </Button>
       </View>
     </FormProvider>

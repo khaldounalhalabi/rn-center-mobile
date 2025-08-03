@@ -10,13 +10,19 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
+import { useNotificationHandler } from "@/hooks/NotificationHandlerHook";
 import useFileDownload from "@/hooks/useFileDownload";
 import useUser from "@/hooks/UserHook";
 import { DownloadIcon } from "@/lib/icons/icons";
 import { useTranslation } from "@/localization";
+import {
+  NotificationPayload,
+  NotificationsTypeEnum,
+} from "@/models/NotificationPayload";
 import Payslip from "@/models/Payslip";
 import PayslipService from "@/services/PayslipService";
 import { useRouter } from "expo-router";
+import { useCallback } from "react";
 import { Pressable, View } from "react-native";
 
 interface PayslipCardProps {
@@ -118,7 +124,10 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
                 style={{ flexDirection: "row", alignItems: "center" }}
               >
                 {isDownloading ? (
-                  <LoadingSpinner />
+                  <LoadingSpinner
+                    className="text-primary-foreground"
+                    size={16}
+                  />
                 ) : (
                   <DownloadIcon className="text-primary-foreground" />
                 )}
@@ -137,7 +146,7 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
 const Payslips = () => {
   const { role } = useUser();
   const service = PayslipService.make(role);
-  const { Render } = useListPage<Payslip>({
+  const { Render, refetch } = useListPage<Payslip>({
     api(page, search, params) {
       return service.mine(
         page,
@@ -151,6 +160,19 @@ const Payslips = () => {
     renderItem: ({ item }) => <PayslipCard item={item} role={role} />,
     queryKey: "payslips",
     enableSearch: true,
+  });
+
+  const handleNotification = useCallback((payload: NotificationPayload) => {
+    if (
+      payload.type == NotificationsTypeEnum.PayslipUpdated ||
+      payload.type == NotificationsTypeEnum.NewPayrunAdded
+    ) {
+      refetch();
+    }
+  }, []);
+
+  useNotificationHandler({
+    handle: handleNotification,
   });
 
   return <Render />;

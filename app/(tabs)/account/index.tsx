@@ -6,6 +6,7 @@ import {
   PowerOff,
   User2Icon,
 } from "@/lib/icons/icons";
+import { useTranslation } from "@/localization";
 import { AuthService } from "@/services/AuthService";
 import { useRouter } from "expo-router";
 import * as React from "react";
@@ -15,6 +16,7 @@ const Index = () => {
   const router = useRouter();
   const { role } = useUser();
   const service = AuthService.make(role);
+  const { t } = useTranslation();
   const logout = async () => {
     await service.logout();
   };
@@ -29,7 +31,7 @@ const Index = () => {
             }}
           >
             <View className="w-full flex flex-row items-center justify-between p-5 border-b border-b-secondary">
-              <Text>Account Details</Text>
+              <Text>{t("admin.users.userDetails")}</Text>
               <User2Icon className="text-primary" />
             </View>
           </Pressable>
@@ -40,7 +42,7 @@ const Index = () => {
             className="w-full"
           >
             <View className="w-full flex flex-row items-center justify-between p-5 border-b border-b-secondary">
-              <Text>My Vacations</Text>
+              <Text>{t("sideBar.vacations")}</Text>
               <CalendarIcon className="text-primary" />
             </View>
           </Pressable>
@@ -51,13 +53,13 @@ const Index = () => {
             className="w-full"
           >
             <View className="w-full flex flex-row items-center justify-between p-5 border-b border-b-secondary">
-              <Text>My schedule</Text>
+              <Text>{t("sideBar.my_schedule")}</Text>
               <CalendarClockIcon className="text-primary" />
             </View>
           </Pressable>
           <Pressable className="w-full" onPress={logout}>
             <View className="w-full flex flex-row items-center justify-between p-5 border-b border-b-secondary">
-              <Text>Logout</Text>
+              <Text>{t("nav.logout")}</Text>
               <PowerOff className="text-primary" />
             </View>
           </Pressable>

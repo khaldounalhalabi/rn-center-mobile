@@ -1,3 +1,4 @@
+import { LANGUAGE_KEY } from "@/context/LanguageProvider";
 import { RoleEnum } from "@/enums/RoleEnum";
 import { User } from "@/models/User";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -92,4 +93,8 @@ export function getEnumValues<T extends object>(enumObj: T): T[keyof T][] {
   return Object.values(enumObj).filter(
     (value) => typeof value === "string" || typeof value === "number",
   ) as T[keyof T][];
+}
+
+export async function getLocale() {
+  return (await AsyncStorage.getItem(LANGUAGE_KEY)) ?? "en";
 }

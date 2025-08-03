@@ -4,8 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import AttendanceLogStatusEnum from "@/enums/AttendanceLogStatusEnum";
 import AttendanceLogTypeEnum from "@/enums/AttendanceLogTypeEnum";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Calendar } from "@/lib/icons/icons";
+import { useTranslation } from "@/localization";
 import dayjs from "dayjs";
+import "dayjs/locale/ar";
 import React, { useState } from "react";
 import { Pressable, View } from "react-native";
 import TranslatableEnum from "../TranslatableEnum";
@@ -43,7 +46,9 @@ const getTypeColor = (type: AttendanceLogTypeEnum) =>
   type == AttendanceLogTypeEnum.CHECKIN ? "bg-green-500" : "bg-red-500";
 
 const AttendanceDayCard: React.FC<Props> = ({ date, logs }) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
+  const { language } = useLanguage();
 
   const getStartEndTimes = () => {
     if (logs.length === 0) return null;
@@ -72,7 +77,7 @@ const AttendanceDayCard: React.FC<Props> = ({ date, logs }) => {
               <View className="flex-row items-center gap-3">
                 <Calendar className="h-4 w-4 text-primary" />
                 <Text className="font-semibold text-foreground">
-                  {dayjs(date).format("dddd, MMMM D")}
+                  {dayjs(date).locale(language).format("dddd, MMMM D")}
                 </Text>
               </View>
               <Button
@@ -90,14 +95,18 @@ const AttendanceDayCard: React.FC<Props> = ({ date, logs }) => {
                 <View className="flex-row items-center gap-4">
                   <View className="flex-row items-center gap-2">
                     <View className="h-3 w-3 rounded-full bg-green-500" />
-                    <Text className="text-sm font-medium">Start</Text>
+                    <Text className="text-sm font-medium">
+                      {t("attendance.from")}
+                    </Text>
                     <Text className="text-sm text-muted-foreground font-mono">
                       {startEndTimes.start}
                     </Text>
                   </View>
                   <View className="flex-row items-center gap-2">
                     <View className="h-3 w-3 rounded-full bg-red-500" />
-                    <Text className="text-sm font-medium">End</Text>
+                    <Text className="text-sm font-medium">
+                      {t("attendance.to")}
+                    </Text>
                     <Text className="text-sm text-muted-foreground font-mono">
                       {startEndTimes.end}
                     </Text>
@@ -142,7 +151,7 @@ const AttendanceDayCard: React.FC<Props> = ({ date, logs }) => {
               <View className="flex-row items-center justify-center py-4">
                 <View className="h-4 w-4 rounded-full bg-red-500 mr-2" />
                 <Text className="text-red-600 text-sm">
-                  No attendance recorded
+                  {t("attendance.no_records")}
                 </Text>
               </View>
             )}

@@ -5,7 +5,7 @@ import * as Updates from "expo-updates";
 import React, { createContext, useEffect, useState } from "react";
 import { I18nManager } from "react-native";
 
-const LANGUAGE_KEY = "selected_language";
+export const LANGUAGE_KEY = "selected_language";
 
 type LanguageContextType = {
   language: string;
@@ -18,7 +18,7 @@ export const LanguageContext = createContext<LanguageContextType | undefined>(
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState("en");
-  const { t, locale, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const loadLanguage = async () => {

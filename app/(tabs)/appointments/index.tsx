@@ -1,24 +1,23 @@
 import Datepicker from "@/components/inputs/datepicker";
 import Select from "@/components/inputs/Select";
-import LabelValue from "@/components/label-value";
 import useListPage from "@/components/ListPage";
 import TranslatableEnum from "@/components/TranslatableEnum";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { AppointmentStatusEnum } from "@/enums/AppointmentStatusEnum";
 import { getEnumValues } from "@/helpers/helpers";
+import { useNotificationHandler } from "@/hooks/NotificationHandlerHook";
 import useUser from "@/hooks/UserHook";
-import { useTranslation } from "@/localization";
 import type { TranslationKey } from "@/localization";
+import { useTranslation } from "@/localization";
+import {
+  NotificationPayload,
+  NotificationsTypeEnum,
+} from "@/models/NotificationPayload";
 import { AppointmentService } from "@/services/AppointmentService";
 import { useRouter } from "expo-router";
+import { useCallback } from "react";
 import { Pressable, View } from "react-native";
 
 interface AppointmentCardProps {
@@ -58,12 +57,20 @@ const AppointmentCard = ({ item, t, router }: AppointmentCardProps) => (
       <CardContent>
         <View className="mt-2">
           <View className="flex-row justify-between mb-1">
-            <Text className="text-muted-foreground">{t("common.dashboard.sequence")}</Text>
-            <Text className="font-semibold text-card-foreground">{item.appointment_sequence}</Text>
+            <Text className="text-muted-foreground">
+              {t("common.dashboard.sequence")}
+            </Text>
+            <Text className="font-semibold text-card-foreground">
+              {item.appointment_sequence}
+            </Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-muted-foreground">{t("common.dashboard.serviceName")}</Text>
-            <Text className="font-semibold text-card-foreground">{item.service?.name}</Text>
+            <Text className="text-muted-foreground">
+              {t("common.dashboard.serviceName")}
+            </Text>
+            <Text className="font-semibold text-card-foreground">
+              {item.service?.name}
+            </Text>
           </View>
         </View>
       </CardContent>
@@ -76,7 +83,7 @@ const Appointments = () => {
   const service = AppointmentService.make(role);
   const { t } = useTranslation();
   const router = useRouter();
-  const { Render } = useListPage({
+  const { Render, refetch } = useListPage({
     queryKey: "appointments",
     api(page, search, params) {
       return service.indexWithPagination(
@@ -112,6 +119,17 @@ const Appointments = () => {
       );
     },
   });
+
+  const handleNotification = useCallback((payload: NotificationPayload) => {
+    if (payload.type === NotificationsTypeEnum.AppointmentEvent) {
+      refetch();
+    }
+  }, []);
+
+  useNotificationHandler({
+    handle: handleNotification,
+  });
+
   return <Render />;
 };
 

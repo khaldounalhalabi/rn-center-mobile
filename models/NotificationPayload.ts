@@ -1,4 +1,5 @@
 import { getNestedPropertyValue } from "@/helpers/helpers";
+import { i18n } from "@/localization";
 import { Href } from "expo-router";
 
 export class NotificationPayload {
@@ -72,7 +73,7 @@ export class NotificationPayload {
   }
 
   public get message(): string {
-    const locale = "en"; // TODO:: fix this for locales
+    const locale = i18n.locale;
     if (locale == "ar") {
       return this.messageAr;
     } else {
@@ -83,16 +84,6 @@ export class NotificationPayload {
   public getUrl(): Href {
     const type = this.type;
     switch (type) {
-      case NotificationsTypeEnum.NewVacationRequest:
-        return `/vacations`;
-      case NotificationsTypeEnum.PayslipStatusChanged:
-        return {
-          pathname: "/payslips/[id]",
-          params: {
-            id: this.getData("payslip_id"),
-          },
-        };
-
       case NotificationsTypeEnum.AppointmentEvent:
         if (this.getData("event") != "DELETED") {
           return {
@@ -134,17 +125,16 @@ export class NotificationPayload {
 }
 
 export enum NotificationsTypeEnum {
-  // Admin notifications
-  NewVacationRequest = "Admin\\NewVacationRequestNotification",
-  PayslipStatusChanged = "Admin\\PayslipStatusChangedNotification",
-
   // Common
   AppointmentEvent = "Common\\AppointmentEventNotification",
-  NewPayrunAdded = "Common\\NewPayrunAddedNotification",
+
   NewVacationAdded = "Common\\NewVacationAddedNotification",
   VacationStatusChanged = "Common\\VacationStatusChangedNotification",
   VacationUpdated = "Common\\VacationUpdatedNotification",
+
+  NewPayrunAdded = "Common\\NewPayrunAddedNotification",
   PayslipUpdated = "Common\\PayslipUpdatedNotification",
+  
   NewTaskComment = "Common\\NewCommentOnTaskNotification",
   TaskStatusChanged = "Common\\TaskStatusChangedNotification",
 

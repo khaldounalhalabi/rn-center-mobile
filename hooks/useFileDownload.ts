@@ -1,4 +1,4 @@
-import { getToken } from "@/helpers/helpers";
+import { getLocale, getToken } from "@/helpers/helpers";
 import AppConfig from "@/lib/Config";
 import * as FileSystem from "expo-file-system";
 import * as IntentLauncher from "expo-intent-launcher";
@@ -20,7 +20,7 @@ export default function useFileDownload() {
       const token = await getToken();
       const headers: Record<string, string> = {
         Accept: mimeType,
-        "Accept-Language": "en",
+        "Accept-Language": await getLocale(),
         Authorization: token ? `Bearer ${token}` : "",
       };
       const fullUrl = url.startsWith("http")

@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/useLanguage";
+import { Languages } from "@/lib/icons/icons";
 import { useTranslation } from "@/localization";
 import React from "react";
-import { Text } from "./ui/text";
 
 export function LanguageToggleButton() {
   const { i18n } = useTranslation();
@@ -10,12 +10,13 @@ export function LanguageToggleButton() {
 
   return (
     <Button
-      variant={"ghost"}
+      variant={"outline"}
       onPress={() => {
         setLanguage(language == "en" ? "ar" : "en");
       }}
+      size={"icon"}
     >
-      <Text>{language == "en" ? "AR" : "EN"}</Text>
+      <Languages className="text-primary" />
     </Button>
   );
 }
