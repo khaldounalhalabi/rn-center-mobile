@@ -2,8 +2,11 @@ import useFcmToken from "@/hooks/FcmTokenHook";
 import useUser from "@/hooks/UserHook";
 import { NotificationPayload } from "@/models/NotificationPayload";
 import { NotificationService } from "@/services/NotificationService";
-import messaging, {
+import {
   FirebaseMessagingTypes,
+  getMessaging,
+  onMessage,
+  setBackgroundMessageHandler,
 } from "@react-native-firebase/messaging";
 import * as Notifications from "expo-notifications";
 import { useRouter } from "expo-router";
@@ -15,7 +18,6 @@ import {
   useEffect,
   useState,
 } from "react";
-
 import RemoteMessage = FirebaseMessagingTypes.RemoteMessage;
 
 export const NotificationsHandlersContext = createContext<Dispatch<
@@ -63,18 +65,19 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
     });
   };
 
+  const messaging = getMessaging();
   useEffect(() => {
     // Foreground
-    const unsubscribe = messaging().onMessage((message) => {
+
+    return onMessage(messaging, (message) => {
       console.log(message);
       handleMessage(message);
     });
-    return unsubscribe;
   }, [handlers, fcmToken, user]);
 
   useEffect(() => {
     // Background
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+    setBackgroundMessageHandler(messaging, async (remoteMessage) => {
       console.log(remoteMessage);
       const notification = new NotificationPayload(remoteMessage?.data ?? {});
       handlers.forEach((handler) => {

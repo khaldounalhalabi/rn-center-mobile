@@ -1,5 +1,11 @@
 import { GET, POST } from "@/http/Http";
-import messaging from "@react-native-firebase/messaging";
+import {
+  AuthorizationStatus,
+  getMessaging,
+  requestPermission,
+  getToken as getFirebaseToken
+} from "@react-native-firebase/messaging";
+import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
@@ -9,8 +15,12 @@ function useFcmToken() {
   const [token, setToken] = useState("");
   const { user } = useUser();
 
+  if (!Device.isDevice || !user) {
+    return "";
+  }
+
   console.log("Fcm Token : " + token);
-  
+
   const getToken = async () => {
     if (Platform.OS == "android") {
       await Notifications.setNotificationChannelAsync("default", {
@@ -20,11 +30,11 @@ function useFcmToken() {
         lightColor: "#FF231F7C",
       });
     }
-
-    const authStatus = await messaging().requestPermission();
+    const messaging = getMessaging();
+    const authStatus = await requestPermission(messaging);
     const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      authStatus === AuthorizationStatus.AUTHORIZED ||
+      authStatus === AuthorizationStatus.PROVISIONAL;
 
     if (!enabled) {
       console.error("Notifications not enabled");
@@ -32,7 +42,7 @@ function useFcmToken() {
     }
 
     try {
-      const currentToken = await messaging().getToken();
+      const currentToken = await getFirebaseToken(messaging);
       await GET<{ fcm_token: string }>(`/fcm/get-token`).then((res) => {
         return res?.data?.fcm_token;
       });

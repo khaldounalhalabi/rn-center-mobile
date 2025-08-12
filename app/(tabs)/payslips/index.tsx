@@ -18,6 +18,7 @@ import { useTranslation } from "@/localization";
 import {
   NotificationPayload,
   NotificationsTypeEnum,
+  RealTimeEventsTypeEnum,
 } from "@/models/NotificationPayload";
 import Payslip from "@/models/Payslip";
 import PayslipService from "@/services/PayslipService";
@@ -165,7 +166,8 @@ const Payslips = () => {
   const handleNotification = useCallback((payload: NotificationPayload) => {
     if (
       payload.type == NotificationsTypeEnum.PayslipUpdated ||
-      payload.type == NotificationsTypeEnum.NewPayrunAdded
+      payload.type == NotificationsTypeEnum.NewPayrunAdded ||
+      payload.type == RealTimeEventsTypeEnum.PayrunStatusChanged
     ) {
       refetch();
     }

@@ -134,7 +134,7 @@ export enum NotificationsTypeEnum {
 
   NewPayrunAdded = "Common\\NewPayrunAddedNotification",
   PayslipUpdated = "Common\\PayslipUpdatedNotification",
-  
+
   NewTaskComment = "Common\\NewCommentOnTaskNotification",
   TaskStatusChanged = "Common\\TaskStatusChangedNotification",
 
@@ -145,5 +145,4 @@ export enum NotificationsTypeEnum {
 export enum RealTimeEventsTypeEnum {
   AttendanceEdited = "Realtime\\AttendanceEditedNotification",
   PayrunStatusChanged = "Realtime\\PayrunStatusChangedNotification",
-  PermissionsUpdated = "Realtime\\PermissionsUpdatedNotification",
 }
