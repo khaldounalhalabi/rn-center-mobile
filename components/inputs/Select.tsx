@@ -59,7 +59,7 @@ const Select = ({
         : defaultValue) ?? "";
 
   return (
-    <View className="w-full flex flex-col items-start">
+    <View className="w-full flex flex-col gap-3 items-start">
       <Label>{label}</Label>
       <ShadcnSelect
         defaultValue={{

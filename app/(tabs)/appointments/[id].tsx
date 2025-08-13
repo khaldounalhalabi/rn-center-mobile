@@ -13,7 +13,6 @@ import { useLocalSearchParams } from "expo-router";
 const Appointment = () => {
   const { id } = useLocalSearchParams();
   const { t } = useTranslation();
-  const tEnum = useTranslateEnum();
   const appointmentId = id ? parseInt(id as string) : 0;
   const { role } = useUser();
   const service = AppointmentService.make(role);
