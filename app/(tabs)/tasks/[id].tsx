@@ -135,7 +135,7 @@ const Task = () => {
         <Value>
           <View className="flex flex-wrap items-center gap-3">
             {task?.users?.map((user, index) => (
-              <Tooltip>
+              <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <Pressable>
                     <Avatar className="h-8 w-8 rounded-lg" alt={""} key={index}>
