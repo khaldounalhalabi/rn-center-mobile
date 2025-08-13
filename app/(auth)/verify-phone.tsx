@@ -31,7 +31,7 @@ const VerifyPhone = () => {
   };
   return (
     <View className="flex-1 items-center justify-center">
-      <Card>
+      <Card className={"w-[90%]"}>
         <CardHeader>
           <CardTitle>
             <Text>{t("auth.verify_phone")}</Text>

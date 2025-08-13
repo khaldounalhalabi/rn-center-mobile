@@ -22,7 +22,7 @@ interface AttendanceLog {
 
 interface Props {
   date: string;
-  logs: AttendanceLog[];
+  logs?: AttendanceLog[];
 }
 
 const getStatusVariant = (
@@ -50,8 +50,12 @@ const AttendanceDayCard: React.FC<Props> = ({ date, logs }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { language } = useLanguage();
 
+  if (!logs) {
+    logs = [];
+  }
+
   const getStartEndTimes = () => {
-    if (logs.length === 0) return null;
+    if (logs?.length === 0) return null;
     const sortedLogs = [...logs].sort(
       (a, b) => dayjs(a.attend_at).valueOf() - dayjs(b.attend_at).valueOf(),
     );

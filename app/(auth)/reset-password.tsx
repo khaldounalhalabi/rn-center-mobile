@@ -25,7 +25,7 @@ const ResetPassword = () => {
 
   return (
     <View className="flex-1 justify-center items-center">
-      <Card className="w-[75%]">
+      <Card className="w-[90%]">
         <CardHeader>
           <CardTitle>
             <Text>{t("auth.resetPassword")}</Text>

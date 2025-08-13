@@ -20,7 +20,7 @@ const SetNewPassword = () => {
 
   return (
     <View className="flex-1 w-full items-center justify-center">
-      <Card className="w-[75%]">
+      <Card className="w-[90%]">
         <CardHeader>
           <CardTitle>
             <Text>{t("auth.resetPassword")}</Text>

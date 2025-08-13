@@ -7,6 +7,7 @@ import { Text } from "../ui/text";
 const ProfileButton = () => {
   const { user } = useUser();
   const router = useRouter();
+  if (!user) return <></>;
   return (
     <Pressable
       onPress={() => {

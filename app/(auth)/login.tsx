@@ -39,8 +39,8 @@ const Login = () => {
     router.replace("/");
   };
   return (
-    <View className="flex-1 items-center justify-center">
-      <Card>
+    <View className="flex-1 items-center justify-center ">
+      <Card className={"w-[90%]"}>
         <CardHeader>
           <CardTitle>
             <Text>{t("auth.Login")}</Text>

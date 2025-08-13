@@ -109,6 +109,11 @@ export default function RootLayout() {
     return eventSubscription.remove;
   });
 
+  ErrorUtils.setGlobalHandler((error, isFatal) => {
+    console.error(error); // This will log the full stack
+    console.error("📜 Full Stack:\n", error.stack);
+  });
+
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>

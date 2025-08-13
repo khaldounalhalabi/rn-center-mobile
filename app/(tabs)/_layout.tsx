@@ -45,6 +45,15 @@ const TabLayout = () => {
         />
 
         <Tabs.Screen
+          name="tasks"
+          options={{
+            title: t("tasks.tasks"),
+            tabBarIcon: ({ color }) => <CheckCheck color={color} />,
+            href: role == RoleEnum.SECRETARY ? { pathname: "/tasks" } : null,
+          }}
+        />
+
+        <Tabs.Screen
           name="index"
           options={{
             title: t("landing.home"),
@@ -87,20 +96,13 @@ const TabLayout = () => {
         />
 
         <Tabs.Screen
-          name="tasks"
-          options={{
-            title: t("tasks.tasks"),
-            tabBarIcon: ({ color }) => <CheckCheck color={color} />,
-            href: role == RoleEnum.SECRETARY ? { pathname: "/tasks" } : null,
-          }}
-        />
-        <Tabs.Screen
           name="notifications"
           options={{
             href: null,
+            title: "notifications",
           }}
         />
-        
+
         <Tabs.Screen
           name="account"
           options={{

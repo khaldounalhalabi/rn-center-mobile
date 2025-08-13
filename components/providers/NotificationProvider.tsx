@@ -44,8 +44,6 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
   const handleMessage = async (payload: RemoteMessage) => {
     console.log(payload);
     const notification = new NotificationPayload(payload?.data ?? {});
-    console.log("Notification type:", notification.type);
-    console.log("Active handlers count:", handlers.length);
     handlers.forEach((handler) => {
       try {
         handler.fn(notification);

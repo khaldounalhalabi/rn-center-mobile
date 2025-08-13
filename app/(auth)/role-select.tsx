@@ -25,7 +25,7 @@ const AuthHome = () => {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <Card className="w-[75%]">
+      <Card className="w-[90%]">
         <CardHeader>
           <CardTitle>
             <Text>{t("auth.welcomeBack")}</Text>
