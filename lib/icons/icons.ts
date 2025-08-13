@@ -1,9 +1,11 @@
 import {
   AlertCircleIcon,
   Award,
+  Bell,
   Calendar,
   CalendarClockIcon,
   CalendarIcon,
+  CheckCircle,
   Clock,
   DownloadIcon,
   Languages,
@@ -36,12 +38,16 @@ iconWithClassName(Plus);
 iconWithClassName(CalendarClockIcon);
 iconWithClassName(CalendarIcon);
 iconWithClassName(Languages);
+iconWithClassName(Bell);
+iconWithClassName(CheckCircle);
 export {
   AlertCircleIcon,
   Award,
+  Bell,
   Calendar,
   CalendarClockIcon,
   CalendarIcon,
+  CheckCircle,
   Clock,
   DownloadIcon,
   Languages,

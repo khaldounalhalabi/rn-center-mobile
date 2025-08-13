@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Languages } from "@/lib/icons/icons";
-import { useTranslation } from "@/localization";
 import React from "react";
 
 export function LanguageToggleButton() {
-  const { i18n } = useTranslation();
   const { language, setLanguage } = useLanguage();
 
   return (

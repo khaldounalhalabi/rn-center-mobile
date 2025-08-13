@@ -94,7 +94,13 @@ const TabLayout = () => {
             href: role == RoleEnum.SECRETARY ? { pathname: "/tasks" } : null,
           }}
         />
-
+        <Tabs.Screen
+          name="notifications"
+          options={{
+            href: null,
+          }}
+        />
+        
         <Tabs.Screen
           name="account"
           options={{

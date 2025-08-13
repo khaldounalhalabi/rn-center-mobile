@@ -1,8 +1,15 @@
 import { Loader2 } from "@/lib/icons/Loader2";
+import { cn } from "@/lib/utils";
 import React, { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
 
-const LoadingSpinner = ({ className = undefined, size = 32 }: { className?: string; size?: number }) => {
+const LoadingSpinner = ({
+  className = undefined,
+  size = 32,
+}: {
+  className?: string;
+  size?: number;
+}) => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -33,7 +40,7 @@ const LoadingSpinner = ({ className = undefined, size = 32 }: { className?: stri
       }}
     >
       <Loader2
-        className={className ?? "text-secondary"}
+        className={cn("text-secondary", className)}
         size={size}
         style={{
           position: "absolute",

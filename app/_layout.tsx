@@ -1,6 +1,7 @@
 import "@/global.css";
 
 import { LanguageToggleButton } from "@/components/LanguageToggleButton";
+import NotificationsButton from "@/components/NotificationsButton";
 import ProfileButton from "@/components/profile/ProfileButton";
 import NotificationProvider from "@/components/providers/NotificationProvider";
 import UserProvider from "@/components/providers/UserProvider";
@@ -126,6 +127,7 @@ export default function RootLayout() {
                         <>
                           <ThemeToggle />
                           <LanguageToggleButton />
+                          <NotificationsButton />
                         </>
                       ),
                       headerTitle: "",

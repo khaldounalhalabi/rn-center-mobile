@@ -8,6 +8,7 @@ import {
   onMessage,
   setBackgroundMessageHandler,
 } from "@react-native-firebase/messaging";
+import { useQueryClient } from "@tanstack/react-query";
 import * as Notifications from "expo-notifications";
 import { useRouter } from "expo-router";
 import {
@@ -36,6 +37,7 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
   const fcmToken = useFcmToken();
   const [handlers, setHandlers] = useState<NotificationHandler[]>([]);
   const { user, role } = useUser();
+  const queryClient = useQueryClient();
 
   console.log(handlers);
 
@@ -53,6 +55,14 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
     });
 
     if (!notification.isNotification()) return;
+
+    await queryClient.invalidateQueries({
+      queryKey: ["app_notifications"],
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: ["unread_notifications_count"],
+    });
 
     // Use Expo notification to display
     await Notifications.scheduleNotificationAsync({
