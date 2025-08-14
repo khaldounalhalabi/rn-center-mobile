@@ -1,7 +1,7 @@
 import AuthProvider from "@/components/providers/AuthProvider";
 import { RoleEnum } from "@/enums/RoleEnum";
 import useUser from "@/hooks/UserHook";
-import { useTranslation } from "@/localization";
+import { i18n, useTranslation } from "@/localization";
 import { Tabs } from "expo-router";
 import {
   Calendar,
@@ -18,6 +18,7 @@ import React from "react";
 const TabLayout = () => {
   const { role } = useUser();
   const { t } = useTranslation();
+  const locale = i18n.locale;
   return (
     <AuthProvider>
       <Tabs
@@ -31,6 +32,9 @@ const TabLayout = () => {
           options={{
             title: t("holidays.holidays"),
             tabBarIcon: ({ color }) => <TentTree color={color} />,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -41,6 +45,9 @@ const TabLayout = () => {
             tabBarIcon: ({ color }) => <Calendar color={color} />,
             href:
               role == RoleEnum.DOCTOR ? { pathname: "/appointments" } : null,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -50,6 +57,9 @@ const TabLayout = () => {
             title: t("tasks.tasks"),
             tabBarIcon: ({ color }) => <CheckCheck color={color} />,
             href: role == RoleEnum.SECRETARY ? { pathname: "/tasks" } : null,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -58,6 +68,9 @@ const TabLayout = () => {
           options={{
             title: t("landing.home"),
             tabBarIcon: ({ color }) => <HomeIcon color={color} />,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -66,6 +79,9 @@ const TabLayout = () => {
           options={{
             title: t("sideBar.my_attendance"),
             tabBarIcon: ({ color }) => <DoorOpen color={color} />,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -75,6 +91,9 @@ const TabLayout = () => {
             title: t("sideBar.my_schedule"),
             tabBarIcon: ({ color }) => <CalendarClock color={color} />,
             href: null,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -84,6 +103,9 @@ const TabLayout = () => {
             title: t("sideBar.vacations"),
             tabBarIcon: ({ color }) => <CalendarIcon color={color} />,
             href: null,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -92,6 +114,9 @@ const TabLayout = () => {
           options={{
             title: t("payslips.payslips"),
             tabBarIcon: ({ color }) => <WalletCards color={color} />,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -100,6 +125,9 @@ const TabLayout = () => {
           options={{
             href: null,
             title: "notifications",
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
 
@@ -108,6 +136,9 @@ const TabLayout = () => {
           options={{
             title: "Settings",
             href: null,
+            tabBarLabelStyle: {
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            },
           }}
         />
       </Tabs>

@@ -53,7 +53,78 @@
       ],
       "expo-notifications",
       "@react-native-firebase/app",
-      "@react-native-firebase/messaging"
+      "@react-native-firebase/messaging",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Kodchasan/Kodchasan-Regular.ttf",
+            "./assets/fonts/Cairo/Cairo-Regular.ttf"
+          ],
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "kodchasan",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/Kodchasan/Kodchasan-Bold.ttf",
+                    "weight": 700
+                  },
+                  {
+                    "path": "./assets/fonts/Kodchasan/Kodchasan-Light.ttf",
+                    "weight": 300
+                  },
+                  {
+                    "path": "./assets/fonts/Kodchasan/Kodchasan-ExtraLight.ttf",
+                    "weight": 200
+                  },
+                  {
+                    "path": "./assets/fonts/Kodchasan/Kodchasan-Medium.ttf",
+                    "weight": 500
+                  },
+                  {
+                    "path": "./assets/fonts/Kodchasan/Kodchasan-SemiBold.ttf",
+                    "weight": 600
+                  }
+                ]
+              },
+              {
+                "fontFamily": "cairo",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/Cairo/Cairo-Bold.ttf",
+                    "weight": 700
+                  },
+                  {
+                    "path": "./assets/fonts/Cairo/Cairo-Light.ttf",
+                    "weight": 300
+                  },
+                  {
+                    "path": "./assets/fonts/Cairo/Cairo-ExtraLight.ttf",
+                    "weight": 200
+                  },
+                  {
+                    "path": "./assets/fonts/Cairo/Cairo-Medium.ttf",
+                    "weight": 500
+                  },
+                  {
+                    "path": "./assets/fonts/Cairo/Cairo-SemiBold.ttf",
+                    "weight": 600
+                  },
+                  {
+                    "path": "./assets/fonts/Cairo/Cairo-ExtraBold.ttf",
+                    "weight": 800
+                  },
+                  {
+                    "path": "./assets/fonts/Cairo/Cairo-Black.ttf",
+                    "weight": 400
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

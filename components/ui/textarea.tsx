@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TextInput, type TextInputProps } from 'react-native';
 import { cn } from '@/lib/utils';
+import { i18n } from "@/localization";
 
 function Textarea({
   className,
@@ -11,6 +12,7 @@ function Textarea({
 }: TextInputProps & {
   ref?: React.RefObject<TextInput>;
 }) {
+  const locale = i18n.locale;
   return (
     <TextInput
       className={cn(
@@ -22,6 +24,9 @@ function Textarea({
       multiline={multiline}
       numberOfLines={numberOfLines}
       textAlignVertical='top'
+      style={{
+        fontFamily: locale == "en" ? "kodchasan" : "cairo",
+      }}
       {...props}
     />
   );

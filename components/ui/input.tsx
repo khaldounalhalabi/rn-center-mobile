@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TextInput, type TextInputProps } from 'react-native';
 import { cn } from '@/lib/utils';
+import { i18n } from "@/localization";
 
 function Input({
   className,
@@ -9,6 +10,7 @@ function Input({
 }: TextInputProps & {
   ref?: React.RefObject<TextInput>;
 }) {
+  const locale = i18n.locale;
   return (
     <TextInput
       className={cn(
@@ -17,6 +19,9 @@ function Input({
         className
       )}
       placeholderClassName={cn('text-muted-foreground text-xs', placeholderClassName)}
+      style={{
+        fontFamily: locale == "en" ? "kodchasan" : "cairo",
+      }}
       {...props}
     />
   );

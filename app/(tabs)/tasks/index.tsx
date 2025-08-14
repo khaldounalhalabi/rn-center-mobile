@@ -87,7 +87,7 @@ const TaskCard = ({ item }: TaskCardProps) => {
         <CardContent style={{ flex: 1, padding: 16 }}>
           <CardHeader>
             <CardTitle>{item.title}</CardTitle>
-            <CardDescription>
+            <CardDescription className={" my-2"}>
               <View className={"flex flex-row items-center gap-3"}>
                 <Badge variant={getTaskStatusVariant(item.status)}>
                   <Text>
