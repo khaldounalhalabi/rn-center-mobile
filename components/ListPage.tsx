@@ -88,21 +88,17 @@ function useListPage<DATAITEM>({
                 router.push(createUrl as any);
               }}
             >
-              <Plus className="text-primary"/>
+              <Plus className="text-primary" />
             </Button>
           )}
           {enableSearch && (
             <Input
-              dataDetectorTypes={"all"}
               className="w-3/4"
               placeholder={t("table.search")}
-              onChangeText={(value) => {
-                if (value.trim().length > 0) {
-                  setSearch(value);
-                } else {
-                  setSearch(value);
-                }
+              onSubmitEditing={(e) => {
+                setSearch(e.nativeEvent.text);
               }}
+              returnKeyType="search"
             />
           )}
         </View>

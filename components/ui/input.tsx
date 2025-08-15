@@ -21,6 +21,7 @@ function Input({
       placeholderClassName={cn('text-muted-foreground text-xs', placeholderClassName)}
       style={{
         fontFamily: locale == "en" ? "kodchasan" : "cairo",
+        fontSize:12
       }}
       {...props}
     />
