@@ -3,6 +3,7 @@ import "@/global.css";
 import { LanguageToggleButton } from "@/components/LanguageToggleButton";
 import NotificationsButton from "@/components/NotificationsButton";
 import ProfileButton from "@/components/profile/ProfileButton";
+import LocationTrackingProvider from "@/components/providers/LocationTrackingProvider";
 import NotificationProvider from "@/components/providers/NotificationProvider";
 import UserProvider from "@/components/providers/UserProvider";
 import { ThemeToggle } from "@/components/ui/ThemeToggleButton";
@@ -87,7 +88,7 @@ export default function RootLayout() {
   dayjs.extend(isBetween);
 
   const hasMounted = React.useRef(false);
-  const { colorScheme, isDarkColorScheme } = useColorScheme();
+  const { isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
   useIsomorphicLayoutEffect(() => {
@@ -109,7 +110,7 @@ export default function RootLayout() {
     return eventSubscription.remove;
   });
 
-  ErrorUtils.setGlobalHandler((error, isFatal) => {
+  ErrorUtils.setGlobalHandler((error) => {
     console.error(error); // This will log the full stack
     console.error("📜 Full Stack:\n", error.stack);
   });
@@ -121,25 +122,27 @@ export default function RootLayout() {
           <LanguageProvider>
             <UserProvider>
               <NotificationProvider>
-                <ThemeProvider
-                  value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-                >
-                  <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-                  <Stack
-                    screenOptions={{
-                      headerShown: true,
-                      headerRight: () => (
-                        <>
-                          <ThemeToggle />
-                          <LanguageToggleButton />
-                          <NotificationsButton />
-                        </>
-                      ),
-                      headerTitle: "",
-                      headerLeft: () => <ProfileButton />,
-                    }}
-                  />
-                </ThemeProvider>
+                <LocationTrackingProvider>
+                  <ThemeProvider
+                    value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+                  >
+                    <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+                    <Stack
+                      screenOptions={{
+                        headerShown: true,
+                        headerRight: () => (
+                          <>
+                            <ThemeToggle />
+                            <LanguageToggleButton />
+                            <NotificationsButton />
+                          </>
+                        ),
+                        headerTitle: "",
+                        headerLeft: () => <ProfileButton />,
+                      }}
+                    />
+                  </ThemeProvider>
+                </LocationTrackingProvider>
               </NotificationProvider>
             </UserProvider>
           </LanguageProvider>

@@ -1,5 +1,6 @@
 import AuthProvider from "@/components/providers/AuthProvider";
 import { RoleEnum } from "@/enums/RoleEnum";
+import useBackgroundLocation from "@/hooks/useBackgroundLocation";
 import useUser from "@/hooks/UserHook";
 import { i18n, useTranslation } from "@/localization";
 import { Tabs } from "expo-router";
@@ -19,6 +20,7 @@ const TabLayout = () => {
   const { role } = useUser();
   const { t } = useTranslation();
   const locale = i18n.locale;
+
   return (
     <AuthProvider>
       <Tabs

@@ -1,6 +1,6 @@
 import AttendanceCards from "@/components/attendance/AttendanceCards";
-import { useRouter } from "expo-router";
-import React from "react";
+import useBackgroundLocation from "@/hooks/useBackgroundLocation";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
