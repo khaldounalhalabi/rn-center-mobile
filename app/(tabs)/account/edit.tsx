@@ -157,6 +157,7 @@ const UpdatePasswordDialog = ({ user }: { user?: User }) => {
             label={t("auth.confirm-password")}
             name="password_confirmation"
             autoComplete="new-password"
+            returnKeyType={"done"}
           />
         </Form>
       </DialogContent>

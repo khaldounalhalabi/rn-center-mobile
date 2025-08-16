@@ -25,14 +25,20 @@ import dayjs from "dayjs";
 import * as Calendar from "expo-calendar";
 import { useRouter } from "expo-router";
 import { useCallback, useState } from "react";
-import { Pressable, View } from "react-native";
+import { Linking, Pressable, View } from "react-native";
 async function requestCalendarPermissions() {
-  const { status } = await Calendar.requestCalendarPermissionsAsync();
-  if (status !== "granted") {
-    alert("Permission to access calendar is required!");
+  const { status, canAskAgain } = await Calendar.getCalendarPermissionsAsync();
+
+  if (status === 'granted') return true;
+
+  if (!canAskAgain) {
+    alert('Please enable calendar access in settings.');
+    await Linking.openSettings();
     return false;
   }
-  return true;
+
+  const { status: newStatus } = await Calendar.requestCalendarPermissionsAsync();
+  return newStatus === 'granted';
 }
 
 interface AppointmentCardProps {
