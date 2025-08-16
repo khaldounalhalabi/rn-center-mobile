@@ -1726,7 +1726,8 @@
     "download": "تحميل",
     "and_items_count": "و {items_count} عنصر آخر",
     "datepicker": "اختر تاريخاً",
-    "retry": "إعادة المحاولة"
+    "retry": "إعادة المحاولة",
+    "add_to_calendar": "إضافة إلى التقويم"
   },
   "holidays": {
     "from": "من",

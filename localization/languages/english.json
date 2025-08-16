@@ -1730,7 +1730,8 @@
     "download": "Download",
     "and_items_count": "And {items_count} other items",
     "datepicker": "Pick a date",
-    "retry": "Retry"
+    "retry": "Retry",
+    "add_to_calendar": "Add to calendar"
   },
   "holidays": {
     "from": "From",
