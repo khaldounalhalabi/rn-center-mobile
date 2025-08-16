@@ -197,9 +197,9 @@ const AttendanceCards = () => {
                       size="lg"
                     >
                       {checkInMutation?.isPending ? (
-                        <LoadingSpinner className="mr-2 text-background" />
+                        <LoadingSpinner className="mr-2 text-primary-foreground" />
                       ) : (
-                        <Clock className="mr-2 text-background" />
+                        <Clock className="mr-2 text-primary-foreground" />
                       )}
                       <Text>{t("attendance.check_in")}</Text>
                     </Button>
@@ -213,9 +213,9 @@ const AttendanceCards = () => {
                       size="lg"
                     >
                       {checkOutMutation?.isPending ? (
-                        <LoadingSpinner className="mr-2" />
+                        <LoadingSpinner className="mr-2 text-destructive-foreground" />
                       ) : (
-                        <Clock className="mr-2 text-primary" />
+                        <Clock className="mr-2 text-destructive-foreground" />
                       )}
                       <Text>{t("attendance.check_out")}</Text>
                     </Button>
