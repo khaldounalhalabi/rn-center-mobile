@@ -16,7 +16,6 @@ const RequestVacation = () => {
   const service = VacationService.make(role);
 
   const onSubmit = async (data: any) => {
-    // from, to: Dayjs or string, reason: string
     const payload = {
       from:
         typeof data.from === "object" && data.from.format
@@ -54,13 +53,12 @@ const RequestVacation = () => {
           onSuccess={onSuccess}
           buttonText={t("components.submit")}
         >
-          <FormDatepicker name="from" label={t("vacations.from")} required />
-          <FormDatepicker name="to" label={t("vacations.to")} required />
+          <FormDatepicker name="from" label={t("vacations.from")} />
+          <FormDatepicker name="to" label={t("vacations.to")} />
           <FormTextarea
             name="reason"
             label={t("vacations.reason")}
-            placeholder={"Enter reason"}
-            required
+            placeholder={t("vacations.reason")}
           />
         </Form>
       </CardContent>

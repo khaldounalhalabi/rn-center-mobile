@@ -44,11 +44,11 @@ async function checkoutIfNeeded() {
 // Background task — no hooks here
 TaskManager.defineTask(BACKGROUND_LOCATION_TASK, async ({ data, error }) => {
   if (error) {
-    console.error("Location task error:", error.message);
     return;
   }
   if (!data) return;
 
+  // @ts-ignore
   const { locations }: { locations: Location.LocationObject[] } = data;
   const currentLocation = locations[0];
   const distance = getDistance(
@@ -59,12 +59,7 @@ TaskManager.defineTask(BACKGROUND_LOCATION_TASK, async ({ data, error }) => {
   );
 
   if (distance > RADIUS_METERS) {
-    console.log(`[Task] User left radius (${distance.toFixed(2)}m)`);
-    try {
-      await checkoutIfNeeded();
-    } catch (e: any) {
-      console.error("Checkout in task error:", e.message);
-    }
+    await checkoutIfNeeded();
   }
 });
 
@@ -76,7 +71,6 @@ export default function useBackgroundLocation() {
         BACKGROUND_LOCATION_TASK,
       );
       if (isRegistered) {
-        console.log("[DEV] Stopping old task...");
         await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
       }
     }
@@ -111,15 +105,10 @@ export default function useBackgroundLocation() {
         TARGET_LOCATION.longitude,
       );
 
-      console.log("Initial distance:", distance);
-
       if (distance > RADIUS_METERS) {
-        console.log("Already outside radius — triggering checkout immediately");
         await checkoutIfNeeded();
       }
-    } catch (e: any) {
-      console.error("Initial checkout error:", e.message);
-    }
+    } catch (e: any) {}
 
     await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
       accuracy: Location.Accuracy.Highest,

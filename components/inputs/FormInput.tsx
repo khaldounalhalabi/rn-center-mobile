@@ -59,9 +59,6 @@ const FormInput = ({
       <Controller
         control={control}
         name={name}
-        rules={{
-          required: required,
-        }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             onBlur={onBlur}

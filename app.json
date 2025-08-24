@@ -25,7 +25,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "permissions": [
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -38,8 +42,14 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": ["en", "ja"],
-            "android": ["en", "ja"]
+            "ios": [
+              "en",
+              "ar"
+            ],
+            "android": [
+              "en",
+              "ar"
+            ]
           }
         }
       ],
@@ -137,10 +147,10 @@
     },
     "extra": {
       "router": {},
+      "supportsRTL": true,
       "eas": {
-        "projectId": "2d3b00aa-7131-4841-8ec1-b1e2e704f3ee"
-      },
-      "supportsRTL": true
+        "projectId": "8c1febb4-06e0-4930-975a-929be419e92e"
+      }
     },
     "owner": "khaldounalhalabi"
   }

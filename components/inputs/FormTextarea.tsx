@@ -1,4 +1,5 @@
 import { getNestedPropertyValue } from "@/helpers/helpers";
+import { i18n } from "@/localization";
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { View } from "react-native";
@@ -32,6 +33,7 @@ const FormTextarea = ({
     setValue,
     formState: { defaultValues, errors },
   } = useFormContext();
+  const locale = i18n.locale;
 
   defaultValue = defaultValue ?? getNestedPropertyValue(defaultValues, name);
   const validationError = getNestedPropertyValue(errors, `${name}.message`);
@@ -50,7 +52,6 @@ const FormTextarea = ({
       <Controller
         control={control}
         name={name}
-        rules={{ required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Textarea
             value={value}
@@ -61,7 +62,10 @@ const FormTextarea = ({
             onBlur={onBlur}
             placeholder={placeholder}
             numberOfLines={numberOfLines}
-            style={{ minHeight }}
+            style={{
+              minHeight,
+              fontFamily: locale == "en" ? "kodchasan" : "cairo",
+            }}
           />
         )}
       />
@@ -72,4 +76,4 @@ const FormTextarea = ({
   );
 };
 
-export default FormTextarea; 
+export default FormTextarea;

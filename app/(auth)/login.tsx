@@ -28,7 +28,6 @@ const Login = () => {
     }
 
     if (response.notVerified()) {
-      console.log("Not verified");
       router.replace("/verify-phone");
     }
     return response;
@@ -36,7 +35,7 @@ const Login = () => {
 
   const onSuccess = async (data: ApiResponse<AuthResponse>) => {
     setUser(data?.data?.user);
-    router.replace("/");
+    router.navigate("/");
   };
   return (
     <View className="flex-1 items-center justify-center ">

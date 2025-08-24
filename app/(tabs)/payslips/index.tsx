@@ -76,7 +76,7 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
                 {item.payrun?.period}
               </Text>
               <Badge variant="outline">
-                <Text style={{ fontWeight: "bold", color: "#4F46E5" }}>
+                <Text className={"text-[#4F46E5]"}>
                   <TranslatableEnum value={item.status} />
                 </Text>
               </Badge>
@@ -90,8 +90,8 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
                 marginBottom: 4,
               }}
             >
-              <Text style={{ color: "#888" }}>{t("payslips.paid_days")}</Text>
-              <Text style={{ fontWeight: "600" }}>{item.paid_days}</Text>
+              <Text>{t("payslips.paid_days")}</Text>
+              <Text>{item.paid_days}</Text>
             </View>
             <View
               style={{
@@ -100,14 +100,14 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
                 marginBottom: 4,
               }}
             >
-              <Text style={{ color: "#888" }}>{t("payslips.gross_pay")}</Text>
-              <Text style={{ fontWeight: "600" }}>{item.gross_pay}</Text>
+              <Text>{t("payslips.gross_pay")}</Text>
+              <Text>{item.gross_pay}</Text>
             </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={{ color: "#888" }}>{t("payslips.net_pay")}</Text>
-              <Text style={{ fontWeight: "600" }}>{item.net_pay}</Text>
+              <Text>{t("payslips.net_pay")}</Text>
+              <Text>{item.net_pay}</Text>
             </View>
           </View>
           {item.can_download && (
@@ -132,9 +132,7 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
                 ) : (
                   <DownloadIcon className="text-primary-foreground" />
                 )}
-                <Text style={{ marginLeft: 8, fontWeight: "bold" }}>
-                  {t("components.download")}
-                </Text>
+                <Text className={"ml-2 font-bold"}>{t("components.download")}</Text>
               </Button>
             </CardFooter>
           )}

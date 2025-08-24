@@ -19,8 +19,6 @@ function useFcmToken() {
     return "";
   }
 
-  console.log("Fcm Token : " + token);
-
   const getToken = async () => {
     if (Platform.OS == "android") {
       await Notifications.setNotificationChannelAsync("default", {
@@ -36,11 +34,6 @@ function useFcmToken() {
       authStatus === AuthorizationStatus.AUTHORIZED ||
       authStatus === AuthorizationStatus.PROVISIONAL;
 
-    if (!enabled) {
-      console.error("Notifications not enabled");
-      throw new Error("Notifications not enabled");
-    }
-
     try {
       const currentToken = await getFirebaseToken(messaging);
       await GET<{ fcm_token: string }>(`/fcm/get-token`).then((res) => {
@@ -51,8 +44,6 @@ function useFcmToken() {
       });
       setToken(currentToken);
     } catch (error: unknown) {
-      console.error("Error getting FCM token");
-      console.error(error);
       throw new Error(`${error}`);
     }
   };

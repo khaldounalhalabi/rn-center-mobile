@@ -43,7 +43,6 @@ export default function useFileDownload() {
       }
     } catch (error: any) {
       Alert.alert("Download failed", error.message || "Unknown error");
-      console.error("File download failed:", error);
     } finally {
       setIsDownloading(false);
     }

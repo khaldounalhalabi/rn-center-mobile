@@ -45,7 +45,6 @@ const FormDatepicker = ({
       <Controller
         control={control}
         name={name}
-        rules={{ required }}
         render={({ field: { onChange: rhfOnChange, value } }) => (
           <Datepicker
             defaultValue={value}

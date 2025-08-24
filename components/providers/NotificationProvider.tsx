@@ -39,17 +39,10 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
   const { user, role } = useUser();
   const queryClient = useQueryClient();
 
-  console.log(handlers);
-
   const handleMessage = async (payload: RemoteMessage) => {
-    console.log(payload);
     const notification = new NotificationPayload(payload?.data ?? {});
     handlers.forEach((handler) => {
-      try {
-        handler.fn(notification);
-      } catch (error) {
-        console.error("Error while calling notification handler", error);
-      }
+      handler.fn(notification);
     });
 
     if (!notification.isNotification()) return;
@@ -78,7 +71,6 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
     // Foreground
 
     return onMessage(messaging, (message) => {
-      console.log(message);
       handleMessage(message);
     });
   }, [handlers, fcmToken, user]);
@@ -86,14 +78,9 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
   useEffect(() => {
     // Background
     setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-      console.log(remoteMessage);
       const notification = new NotificationPayload(remoteMessage?.data ?? {});
       handlers.forEach((handler) => {
-        try {
-          handler.fn(notification);
-        } catch (error) {
-          console.error("Error while calling notification handler", error);
-        }
+        handler.fn(notification);
       });
       const notificationsCount = (
         await NotificationService.make(role).unreadCount()
