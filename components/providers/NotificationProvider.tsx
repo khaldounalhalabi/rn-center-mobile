@@ -75,27 +75,28 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
     });
   }, [handlers, fcmToken, user]);
 
+  setBackgroundMessageHandler(messaging, async (remoteMessage) => {
+    const notification = new NotificationPayload(remoteMessage?.data ?? {});
+    handlers.forEach((handler) => {
+      handler.fn(notification);
+    });
+    const notificationsCount = (
+      await NotificationService.make(role).unreadCount()
+    ).data.unread_count;
+    await Notifications.setBadgeCountAsync(notificationsCount ?? 0);
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: notification.title,
+        body: notification.message,
+        data: remoteMessage.data,
+      },
+      trigger: null,
+    });
+  });
+
   useEffect(() => {
     // Background
-    setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-      const notification = new NotificationPayload(remoteMessage?.data ?? {});
-      handlers.forEach((handler) => {
-        handler.fn(notification);
-      });
-      const notificationsCount = (
-        await NotificationService.make(role).unreadCount()
-      ).data.unread_count;
-      await Notifications.setBadgeCountAsync(notificationsCount ?? 0);
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: notification.title,
-          body: notification.message,
-          data: remoteMessage.data,
-        },
-        trigger: null,
-      });
-    });
 
     // Taps (foreground/background/closed)
     const tapSubscription =
