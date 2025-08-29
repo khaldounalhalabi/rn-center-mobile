@@ -1727,7 +1727,14 @@
     "and_items_count": "و {items_count} عنصر آخر",
     "datepicker": "اختر تاريخاً",
     "retry": "إعادة المحاولة",
-    "add_to_calendar": "إضافة إلى التقويم"
+    "add_to_calendar": "إضافة إلى التقويم",
+    "download_complete": "اكتمل التحميل",
+    "file_saved_to_device": "تم حفظ {{filename}} في جهازك",
+    "permission_required": "مطلوب إذن",
+    "storage_permission_message": "يرجى منح إذن التخزين لحفظ الملفات في جهازك.",
+    "download_failed": "فشل التحميل",
+    "unknown_error": "حدث خطأ غير معروف",
+    "open_file": "فتح الملف"
   },
   "holidays": {
     "from": "من",

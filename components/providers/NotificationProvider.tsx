@@ -9,8 +9,11 @@ import {
   setBackgroundMessageHandler,
 } from "@react-native-firebase/messaging";
 import { useQueryClient } from "@tanstack/react-query";
+import * as FileSystem from "expo-file-system";
+import * as IntentLauncher from "expo-intent-launcher";
 import * as Notifications from "expo-notifications";
 import { useRouter } from "expo-router";
+import * as Sharing from "expo-sharing";
 import {
   createContext,
   Dispatch,
@@ -19,6 +22,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Platform } from "react-native";
 import RemoteMessage = FirebaseMessagingTypes.RemoteMessage;
 
 export const NotificationsHandlersContext = createContext<Dispatch<
@@ -38,6 +42,7 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
   const [handlers, setHandlers] = useState<NotificationHandler[]>([]);
   const { user, role } = useUser();
   const queryClient = useQueryClient();
+  const service = NotificationService.make(role);
 
   const handleMessage = async (payload: RemoteMessage) => {
     const notification = new NotificationPayload(payload?.data ?? {});
@@ -75,44 +80,115 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
     });
   }, [handlers, fcmToken, user]);
 
-  setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-    const notification = new NotificationPayload(remoteMessage?.data ?? {});
-    handlers.forEach((handler) => {
-      handler.fn(notification);
-    });
-    const notificationsCount = (
-      await NotificationService.make(role).unreadCount()
-    ).data.unread_count;
-    await Notifications.setBadgeCountAsync(notificationsCount ?? 0);
+  useEffect(() => {
+    setBackgroundMessageHandler(messaging, async (remoteMessage) => {
+      const notification = new NotificationPayload(remoteMessage?.data ?? {});
+      handlers.forEach((handler) => {
+        handler.fn(notification);
+      });
+      const notificationsCount =
+        (await service.unreadCount()).data?.unread_count ?? 0;
+      await Notifications.setBadgeCountAsync(notificationsCount ?? 0);
 
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: notification.title,
-        body: notification.message,
-        data: remoteMessage.data,
-      },
-      trigger: null,
+      // Only schedule notification if it's not a file download notification
+      if (
+        !remoteMessage?.data?.type ||
+        remoteMessage.data.type !== "file_download"
+      ) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: notification.title,
+            body: notification.message,
+            data: remoteMessage.data,
+          },
+          trigger: null,
+        });
+      }
     });
-  });
+  }, [messaging, handlers, service]);
 
   useEffect(() => {
     // Background
 
     // Taps (foreground/background/closed)
     const tapSubscription =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        const data = response.notification.request.content.data;
-        const notification = new NotificationPayload(data);
-        router.push(notification.getUrl() as any);
-      });
+      Notifications.addNotificationResponseReceivedListener(
+        async (response) => {
+          const data = response.notification.request.content.data;
+
+          // Handle file download notifications
+          if (data?.type === "file_download" && data?.action === "open_file") {
+            try {
+              const { fileUri, mimeType } = data as {
+                fileUri: string;
+                mimeType: string;
+              };
+              if (Platform.OS === "android") {
+                const contentUri = await FileSystem.getContentUriAsync(fileUri);
+                await IntentLauncher.startActivityAsync(
+                  "android.intent.action.VIEW",
+                  {
+                    data: contentUri,
+                    flags: 1,
+                    type: mimeType || "application/pdf",
+                  },
+                );
+              } else {
+                await Sharing.shareAsync(fileUri, {
+                  mimeType: mimeType || "application/pdf",
+                });
+              }
+            } catch (error) {
+              console.error("Failed to open file from notification:", error);
+              // Fallback to regular notification handling
+              const notification = new NotificationPayload(data);
+              router.push(notification.getUrl() as any);
+            }
+          } else {
+            // Handle regular notifications
+            const notification = new NotificationPayload(data);
+            router.push(notification.getUrl() as any);
+          }
+        },
+      );
 
     // Handle if app opened from closed state
     (async () => {
       const response = await Notifications.getLastNotificationResponseAsync();
       if (response) {
         const data = response.notification.request.content.data;
-        const notification = new NotificationPayload(data);
-        router.push(notification.getUrl() as any);
+        if (data?.type === "file_download" && data?.action === "open_file") {
+          try {
+            const { fileUri, mimeType } = data as {
+              fileUri: string;
+              mimeType: string;
+            };
+            if (Platform.OS === "android") {
+              const contentUri = await FileSystem.getContentUriAsync(fileUri);
+              await IntentLauncher.startActivityAsync(
+                "android.intent.action.VIEW",
+                {
+                  data: contentUri,
+                  flags: 1,
+                  type: mimeType || "application/pdf",
+                },
+              );
+            } else {
+              await Sharing.shareAsync(fileUri, {
+                mimeType: mimeType || "application/pdf",
+              });
+            }
+          } catch (error) {
+            console.error("Failed to open file from notification:", error);
+            // Fallback to regular notification handling
+            const notification = new NotificationPayload(data);
+            router.push(notification.getUrl() as any);
+          }
+        } else {
+          // Handle regular notifications
+          const notification = new NotificationPayload(data);
+          router.push(notification.getUrl() as any);
+        }
       }
     })();
 

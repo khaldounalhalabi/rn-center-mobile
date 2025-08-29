@@ -28,7 +28,12 @@
       "googleServicesFile": "./google-services.json",
       "permissions": [
         "android.permission.READ_CALENDAR",
-        "android.permission.WRITE_CALENDAR"
+        "android.permission.WRITE_CALENDAR",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.VIBRATE"
       ]
     },
     "web": {
@@ -42,14 +47,8 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": [
-              "en",
-              "ar"
-            ],
-            "android": [
-              "en",
-              "ar"
-            ]
+            "ios": ["en", "ar"],
+            "android": ["en", "ar"]
           }
         }
       ],
@@ -62,6 +61,7 @@
         }
       ],
       "expo-notifications",
+      "expo-media-library",
       "@react-native-firebase/app",
       "@react-native-firebase/messaging",
       [

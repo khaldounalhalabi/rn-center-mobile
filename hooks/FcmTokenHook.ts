@@ -1,9 +1,8 @@
-import { GET, POST } from "@/http/Http";
+import { POST } from "@/http/Http";
 import {
-  AuthorizationStatus,
+  getToken as getFirebaseToken,
   getMessaging,
   requestPermission,
-  getToken as getFirebaseToken
 } from "@react-native-firebase/messaging";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -15,11 +14,11 @@ function useFcmToken() {
   const [token, setToken] = useState("");
   const { user } = useUser();
 
-  if (!Device.isDevice || !user) {
-    return "";
-  }
-
   const getToken = async () => {
+    if (!Device.isDevice || !user) {
+      return;
+    }
+
     if (Platform.OS == "android") {
       await Notifications.setNotificationChannelAsync("default", {
         name: "default",
@@ -29,22 +28,16 @@ function useFcmToken() {
       });
     }
     const messaging = getMessaging();
-    const authStatus = await requestPermission(messaging);
-    const enabled =
-      authStatus === AuthorizationStatus.AUTHORIZED ||
-      authStatus === AuthorizationStatus.PROVISIONAL;
+    await requestPermission(messaging);
 
     try {
       const currentToken = await getFirebaseToken(messaging);
-      await GET<{ fcm_token: string }>(`/fcm/get-token`).then((res) => {
-        return res?.data?.fcm_token;
-      });
       await POST(`/fcm/store-token`, {
         fcm_token: currentToken,
       });
       setToken(currentToken);
     } catch (error: unknown) {
-      throw new Error(`${error}`);
+      console.error("Error getting FCM token:", error);
     }
   };
 
@@ -52,7 +45,7 @@ function useFcmToken() {
     getToken();
   }, [user]);
 
-  return token;
+  return token ?? "";
 }
 
 export default useFcmToken;

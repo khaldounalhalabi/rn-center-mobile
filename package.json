@@ -84,7 +84,8 @@
     "tailwindcss": "^3.4.17",
     "expo-task-manager": "~13.1.6",
     "expo-location": "~18.1.6",
-    "expo-calendar": "~14.1.4"
+    "expo-calendar": "~14.1.4",
+    "expo-media-library": "~17.1.7"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
