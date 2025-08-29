@@ -132,7 +132,9 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
                 ) : (
                   <DownloadIcon className="text-primary-foreground" />
                 )}
-                <Text className={"ml-2 font-bold"}>{t("components.download")}</Text>
+                <Text className={"ml-2 font-bold"}>
+                  {t("components.download")}
+                </Text>
               </Button>
             </CardFooter>
           )}
@@ -161,15 +163,18 @@ const Payslips = () => {
     enableSearch: true,
   });
 
-  const handleNotification = useCallback((payload: NotificationPayload) => {
-    if (
-      payload.type == NotificationsTypeEnum.PayslipUpdated ||
-      payload.type == NotificationsTypeEnum.NewPayrunAdded ||
-      payload.type == RealTimeEventsTypeEnum.PayrunStatusChanged
-    ) {
-      refetch();
-    }
-  }, []);
+  const handleNotification = useCallback(
+    (payload: NotificationPayload) => {
+      if (
+        payload.type == NotificationsTypeEnum.PayslipUpdated ||
+        payload.type == NotificationsTypeEnum.NewPayrunAdded ||
+        payload.type == RealTimeEventsTypeEnum.PayrunStatusChanged
+      ) {
+        refetch();
+      }
+    },
+    [refetch],
+  );
 
   useNotificationHandler({
     handle: handleNotification,

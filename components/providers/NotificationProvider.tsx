@@ -78,7 +78,7 @@ const NotificationProvider = ({ children }: { children?: ReactNode }) => {
     return onMessage(messaging, (message) => {
       handleMessage(message);
     });
-  }, [handlers, fcmToken, user]);
+  }, [handlers, fcmToken, user, handleMessage, messaging]);
 
   useEffect(() => {
     setBackgroundMessageHandler(messaging, async (remoteMessage) => {

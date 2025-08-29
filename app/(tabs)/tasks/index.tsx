@@ -168,7 +168,7 @@ const Tasks = () => {
     ) {
       refetch();
     }
-  }, []);
+  }, [refetch]);
 
   useNotificationHandler({
     handle: handleNotification,

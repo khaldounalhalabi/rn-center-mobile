@@ -14,13 +14,13 @@ export default function AuthLayout() {
         });
       }
     }
-  }, [user]);
+  }, [user, router, signInRole, setSignInRole, router]);
 
   useEffect(() => {
     if (!signInRole && pathname !== "/role-select") {
       router.replace("/role-select");
     }
-  }, []);
+  }, [pathname]);
 
   return (
     <Slot

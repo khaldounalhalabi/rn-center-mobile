@@ -108,7 +108,7 @@ const Vacations = () => {
     ) {
       refetch();
     }
-  }, []);
+  }, [refetch]);
 
   useNotificationHandler({
     handle: handleNotification,

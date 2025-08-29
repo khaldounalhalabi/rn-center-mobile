@@ -38,8 +38,7 @@ const PayslipDetails = () => {
   });
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedStatus, setSelectedStatus] =
-    useState<PayslipStatusEnum | null>(null);
+  const [, setSelectedStatus] = useState<PayslipStatusEnum | null>(null);
 
   const toggleStatusMutation = useMutation({
     mutationFn: async (status: PayslipStatusEnum) => {

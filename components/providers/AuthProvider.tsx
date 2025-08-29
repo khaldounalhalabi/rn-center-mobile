@@ -9,7 +9,7 @@ const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     if (!user && initialized) {
       router.replace("/role-select");
     }
-  }, [user, initialized]);
+  }, [user, initialized, router]);
   return <>{children}</>;
 };
 

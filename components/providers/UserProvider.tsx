@@ -24,21 +24,7 @@ const UserProvider = ({ children }: { children?: React.ReactNode }) => {
   const [signRole, updateSignInRole] = useState<RoleEnum | undefined>(
     undefined,
   );
-
-  useEffect(() => {
-    initializeUser().then(() => {
-      setIsInitialized(true);
-    });
-
-    AsyncStorage.getItem("login_role").then((data) => {
-      updateSignInRole((data as RoleEnum) ?? undefined);
-    });
-  }, []);
-
-  useEffect(() => {
-    setRole(user?.role ?? RoleEnum.PUBLIC);
-    updateRole(user?.role ?? RoleEnum.PUBLIC);
-  }, [user]);
+  const service = AuthService.make();
 
   const fillUser = useCallback((newUser: User | undefined) => {
     if (newUser) {
@@ -52,12 +38,27 @@ const UserProvider = ({ children }: { children?: React.ReactNode }) => {
     }
   }, []);
 
-  const initializeUser = async () => {
-    const res = await AuthService.make().me();
+  const initializeUser = useCallback(async () => {
+    const res = await service.me();
     fillUser(res.data);
     await setUser(res.data);
     return res.data;
-  };
+  }, [fillUser, setUser]);
+
+  useEffect(() => {
+    initializeUser().then(() => {
+      setIsInitialized(true);
+    });
+
+    AsyncStorage.getItem("login_role").then((data) => {
+      updateSignInRole((data as RoleEnum) ?? undefined);
+    });
+  }, [initializeUser]);
+
+  useEffect(() => {
+    setRole(user?.role ?? RoleEnum.PUBLIC);
+    updateRole(user?.role ?? RoleEnum.PUBLIC);
+  }, [user]);
 
   const setSignInRole = async (role: RoleEnum): Promise<void> => {
     const prev = isInitialized;

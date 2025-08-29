@@ -29,16 +29,17 @@ import { Linking, Pressable, View } from "react-native";
 async function requestCalendarPermissions() {
   const { status, canAskAgain } = await Calendar.getCalendarPermissionsAsync();
 
-  if (status === 'granted') return true;
+  if (status === "granted") return true;
 
   if (!canAskAgain) {
-    alert('Please enable calendar access in settings.');
+    alert("Please enable calendar access in settings.");
     await Linking.openSettings();
     return false;
   }
 
-  const { status: newStatus } = await Calendar.requestCalendarPermissionsAsync();
-  return newStatus === 'granted';
+  const { status: newStatus } =
+    await Calendar.requestCalendarPermissionsAsync();
+  return newStatus === "granted";
 }
 
 interface AppointmentCardProps {
@@ -221,11 +222,14 @@ const Appointments = () => {
     },
   });
 
-  const handleNotification = useCallback((payload: NotificationPayload) => {
-    if (payload.type === NotificationsTypeEnum.AppointmentEvent) {
-      refetch();
-    }
-  }, []);
+  const handleNotification = useCallback(
+    (payload: NotificationPayload) => {
+      if (payload.type === NotificationsTypeEnum.AppointmentEvent) {
+        refetch();
+      }
+    },
+    [refetch],
+  );
 
   useNotificationHandler({
     handle: handleNotification,

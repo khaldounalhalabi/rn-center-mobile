@@ -15,10 +15,11 @@ const Index = () => {
   const { role } = useUser();
   const router = useRouter();
   const [mutating, setMutating] = React.useState<string>("");
+  const service = NotificationService.make(role);
 
   const { Render, refetch } = useListPage({
     api: (page, search, params) =>
-      NotificationService.make(role).indexWithPagination(
+      service.indexWithPagination(
         page,
         search,
         undefined,
@@ -77,7 +78,7 @@ const Index = () => {
   const markAsRead = useMutation({
     mutationFn: async (notificationId: string) => {
       setMutating(notificationId);
-      return await NotificationService.make(role).markAsRead(notificationId);
+      return await service.markAsRead(notificationId);
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({

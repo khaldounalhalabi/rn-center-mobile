@@ -1,9 +1,7 @@
 import LabelValue from "@/components/label-value";
 import LoadingScreen from "@/components/LoadingScreen";
 import Page from "@/components/page";
-import TranslatableEnum, {
-  useTranslateEnum,
-} from "@/components/TranslatableEnum";
+import TranslatableEnum from "@/components/TranslatableEnum";
 import useUser from "@/hooks/UserHook";
 import { useTranslation } from "@/localization";
 import { AppointmentService } from "@/services/AppointmentService";

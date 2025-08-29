@@ -128,10 +128,10 @@ export class AuthService extends BaseService<AuthService, AuthResponse>() {
     return await this.errorHandler(res);
   }
   public logout = async () => {
+    this.router.replace("/role-select");
     await deleteTokens();
     await deleteRole();
     await deleteUser();
-    this.router.replace("/role-select");
   };
 
   public async verifyPhone(verificationCode: string) {

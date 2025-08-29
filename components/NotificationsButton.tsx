@@ -12,9 +12,10 @@ import { View } from "react-native";
 const NotificationsButton = () => {
   const router = useRouter();
   const { role } = useUser();
+  const service = NotificationService.make(role);
   const { data: unreadCount } = useQuery({
     queryKey: ["unread_notifications_count"],
-    queryFn: async () => await NotificationService.make(role).unreadCount(),
+    queryFn: async () => await service.unreadCount(),
     select: (data) => data?.data?.unread_count ?? 0,
     enabled: role != undefined && role != RoleEnum.PUBLIC,
   });

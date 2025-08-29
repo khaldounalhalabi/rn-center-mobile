@@ -67,11 +67,12 @@ const Task = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState("");
   const [loadingId, setLoadingId] = useState<number | null>(null);
+  const taskCommentService = TaskCommentService.make(role);
 
   const addCommentMutation = useMutation({
     mutationFn: async (comment: string) => {
       if (!task) throw new Error("No task");
-      const res = await TaskCommentService.make(role).store({
+      const res = await taskCommentService.store({
         task_id: task.id,
         comment,
       });
@@ -85,7 +86,7 @@ const Task = () => {
 
   const editCommentMutation = useMutation({
     mutationFn: async ({ id, comment }: { id: number; comment: string }) => {
-      const res = await TaskCommentService.make(role).update(id, { comment });
+      const res = await taskCommentService.update(id, { comment });
       return res.data;
     },
     onSuccess: async () => {
@@ -97,7 +98,7 @@ const Task = () => {
 
   const deleteCommentMutation = useMutation({
     mutationFn: async (id: number) => {
-      await TaskCommentService.make(role).delete(id);
+      await taskCommentService.delete(id);
       return id;
     },
     onSuccess: async () => {
