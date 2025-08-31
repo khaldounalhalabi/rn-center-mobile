@@ -42,7 +42,7 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
         router.push({
           pathname: "/payslips/[id]",
           params: {
-            id: item.id,
+            id: item?.id,
           },
         });
       }}
@@ -73,11 +73,11 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
               }}
             >
               <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                {item.payrun?.period}
+                {item?.payrun?.period}
               </Text>
               <Badge variant="outline">
                 <Text className={"text-[#4F46E5]"}>
-                  <TranslatableEnum value={item.status} />
+                  <TranslatableEnum value={item?.status} />
                 </Text>
               </Badge>
             </View>
@@ -91,7 +91,7 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
               }}
             >
               <Text>{t("payslips.paid_days")}</Text>
-              <Text>{item.paid_days}</Text>
+              <Text>{item?.paid_days}</Text>
             </View>
             <View
               style={{
@@ -101,16 +101,16 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
               }}
             >
               <Text>{t("payslips.gross_pay")}</Text>
-              <Text>{item.gross_pay}</Text>
+              <Text>{item?.gross_pay}</Text>
             </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text>{t("payslips.net_pay")}</Text>
-              <Text>{item.net_pay}</Text>
+              <Text>{item?.net_pay}</Text>
             </View>
           </View>
-          {item.can_download && (
+          {item?.can_download && (
             <CardFooter
               style={{ paddingHorizontal: 0, paddingBottom: 0, paddingTop: 8 }}
             >
@@ -119,8 +119,8 @@ const PayslipCard = ({ item, role }: PayslipCardProps) => {
                 size="sm"
                 onPress={async (e) => {
                   e.stopPropagation && e.stopPropagation();
-                  const url = `${role}/payslips/${item.id}/pdf`;
-                  await downloadFile(url, `Payslip-${item.id}.pdf`);
+                  const url = `${role}/payslips/${item?.id}/pdf`;
+                  await downloadFile(url, `Payslip-${item?.id}.pdf`);
                 }}
                 style={{ flexDirection: "row", alignItems: "center" }}
               >

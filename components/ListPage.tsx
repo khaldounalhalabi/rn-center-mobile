@@ -63,7 +63,7 @@ function useListPage<DATAITEM>({
         : null;
     },
     select(data) {
-      return data.pages.flatMap((d) => d.data);
+      return data.pages.flatMap((d) => d.data ?? []);
     },
   });
 
@@ -93,7 +93,7 @@ function useListPage<DATAITEM>({
           )}
           {enableSearch && (
             <Input
-              className="w-3/4"
+              className={`${createUrl ? "w-3/4" : "w-full"}`}
               placeholder={t("table.search")}
               onSubmitEditing={(e) => {
                 setSearch(e.nativeEvent.text);

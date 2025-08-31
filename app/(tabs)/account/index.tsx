@@ -14,10 +14,11 @@ import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 
 const Index = () => {
   const router = useRouter();
-  const { role } = useUser();
+  const { role, setUser } = useUser();
   const service = AuthService.make(role);
   const { t } = useTranslation();
   const logout = async () => {
+    setUser(undefined);
     await service.logout();
   };
   return (
